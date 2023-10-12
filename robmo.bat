@@ -1,1 +1,2 @@
-@eho off
+@echo off
+start /b cmd
