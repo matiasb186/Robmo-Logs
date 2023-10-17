@@ -14,6 +14,7 @@ pip install wmi
 pip install psutil
 pip install cryptography
 pip install pypiwin32
+pip install regex
 pip install requests-toolbelt
 pip install cx-Freeze
 pip install pyuac
