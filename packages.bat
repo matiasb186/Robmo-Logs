@@ -13,6 +13,7 @@ pip install pyinstaller
 pip install wmi
 pip install psutil
 pip install cryptography
+pip install anonfile
 pip install pypiwin32
 pip install regex
 pip install addict
