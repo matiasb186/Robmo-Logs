@@ -21,11 +21,11 @@ pip install requests-toolbelt
 pip install FirefoxDecrypt
 pip install cx-Freeze
 pip install pyuac
-pip install pillow
 pip install customtkinter
 pip install pyautogui
 pip install telegram
+pip install python-tk
+pip install python-telegram-bot
 pip install pycryptodome
 pip install Pillow
 pip install pybase64
-pip install python-telegram-bot
