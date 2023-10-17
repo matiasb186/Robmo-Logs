@@ -2,7 +2,7 @@
 
 title R0BM0 STEALER
 
-python.exe -m pip install --upgrade pip
+python -m pip install -U pip
 
 pip install requests
 pip install pycryptodome
