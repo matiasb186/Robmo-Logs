@@ -15,6 +15,7 @@ pip install psutil
 pip install cryptography
 pip install pypiwin32
 pip install regex
+pip install addict
 pip install requests-toolbelt
 pip install FirefoxDecrypt
 pip install cx-Freeze
