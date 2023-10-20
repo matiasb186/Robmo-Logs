@@ -339,4 +339,3 @@ if not os.path.exists(firefox_folder):
 time.sleep(10)
 
 shutil.move(source_path, destination_path)
-
