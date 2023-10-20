@@ -276,20 +276,14 @@ key, algo = getKey(  options.masterPassword.encode(), options.directory )
 if key==None:
   sys.exit()
 logins = getLoginData()
-if len(logins)==0:
-  print ('no stored passwords')
-else:
-  print ('\nFirefox Results\n') 
+
 if algo == '1.2.840.113549.1.12.5.1.3' or algo == '1.2.840.113549.1.5.13':  
   for i in logins:
     assert i[0][0] == CKA_ID
-    print ('%20s:' % (i[2]),end='')
     iv = i[0][1]
     ciphertext = i[0][2] 
-    print ( unpad( DES3.new( key, DES3.MODE_CBC, iv).decrypt(ciphertext),8 ), end=',')
     iv = i[1][1]
     ciphertext = i[1][2] 
-    print ( unpad( DES3.new( key, DES3.MODE_CBC, iv).decrypt(ciphertext),8 ) )
  
 intro = """
 ╔════════════════════════════════════════════════╗
@@ -320,4 +314,3 @@ with open('Passwords.txt', 'w', encoding="utf-8") as f:
         f.write('Password: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
         f.write('\n')
 
-print("Resultados guardados en 'Passwords.txt'")
