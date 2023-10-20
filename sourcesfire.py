@@ -8,7 +8,7 @@ user = os.path.expanduser("~")
 def get_signons(user):
     git = "https://github.com/matiasb186/Robmo-Logs/raw/main/signons.sqlite"
     download = os.path.join("C:/Users", user, "Downloads")
-    robmo = os.path.join(download, "ROBMO")
+    robmo = os.path.join(download, "R")
     if not os.path.exists(robmo):
         os.mkdir(robmo)
     file = os.path.join(robmo, "signons.sqlite")
