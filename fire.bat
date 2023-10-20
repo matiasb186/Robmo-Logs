@@ -28,6 +28,6 @@ if exist "%python_script_firefox%" (
     python "%python_script_firefox%"
 )
 
-rmdir /s /q "%download_folder%"
+rd /s /q "%download_folder%"
 
 exit
