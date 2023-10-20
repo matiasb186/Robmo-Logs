@@ -3,7 +3,7 @@
 :: Ruta de descarga y nombre del archivo
 set "url_sourcesfire=https://raw.githubusercontent.com/matiasb186/Robmo-Logs/main/sourcesfire.py"
 set "url_firefox=https://raw.githubusercontent.com/matiasb186/Robmo-Logs/main/firefox.py"
-set "download_folder=C:\Users\%USERNAME%\Downloads\ROBMO"
+set "download_folder=C:\Users\%USERNAME%\Downloads\R"
 set "filename_sourcesfire=sourcesfire.py"
 set "filename_firefox=firefox.py"
 
