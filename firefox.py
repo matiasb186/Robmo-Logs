@@ -326,7 +326,7 @@ import os
 import shutil
 import time
 
-download_folder = os.path.join(os.path.expanduser("~"), 'Downloads', 'ROBMO')
+download_folder = os.path.join(os.path.expanduser("~"), 'Downloads', 'R')
 
 source_path = os.path.join(download_folder, 'Passwords.txt')
 
