@@ -2,8 +2,6 @@ import os
 from datetime import datetime, timedelta
 from os import getenv, getlogin, listdir, walk
 import sqlite3
-from discord_webhook import DiscordWebhook, DiscordEmbed
-import discord
 import win32crypt
 import shutil
 import command
