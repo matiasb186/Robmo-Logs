@@ -1,5 +1,7 @@
 from struct import unpack
 import sys
+import shutil
+import os
 from binascii import hexlify, unhexlify 
 import sqlite3
 from base64 import b64decode
@@ -12,6 +14,14 @@ from Crypto.Util.Padding import unpad
 from optparse import OptionParser
 import json
 from pathlib import Path
+import os,json,base64,sqlite3,win32crypt,shutil,click,re,random,hmac
+from pyasn1.codec.der import decoder;from hashlib import sha1,pbkdf2_hmac
+from struct import unpack;from binascii import hexlify,unhexlify
+from rich.console import Console;from rich.table import Table;from rich.theme import Theme
+from Crypto.Cipher import DES3,AES;from Crypto.Util.number import long_to_bytes;from Crypto.Util.Padding import unpad 
+from time import sleep,localtime
+
+if os.name=='nt':pass
 
 def getShortLE(d, a):
    return unpack('<H',(d)[a:a+2])[0]
@@ -275,18 +285,39 @@ key, algo = getKey(  options.masterPassword.encode(), options.directory )
 if key==None:
   sys.exit()
 logins = getLoginData()
-if len(logins)==0:
-  print ('no stored passwords')
-else:
-  print ('\nFirefox Results\n') 
+
 if algo == '1.2.840.113549.1.12.5.1.3' or algo == '1.2.840.113549.1.5.13':  
   for i in logins:
     assert i[0][0] == CKA_ID
-    print ('%20s:' % (i[2]),end='')
     iv = i[0][1]
     ciphertext = i[0][2] 
-    print ( unpad( DES3.new( key, DES3.MODE_CBC, iv).decrypt(ciphertext),8 ), end=',')
     iv = i[1][1]
     ciphertext = i[1][2] 
-    print ( unpad( DES3.new( key, DES3.MODE_CBC, iv).decrypt(ciphertext),8 ) )
  
+intro = """
+╔════════════════════════════════════════════════╗
+
+   ██████╗░░█████╗░██████╗░███╗░░░███╗░█████╗░
+   ██╔══██╗██╔══██╗██╔══██╗████╗░████║██╔══██╗
+   ██████╔╝██║░░██║██████╦╝██╔████╔██║██║░░██║
+   ██╔══██╗██║░░██║██╔══██╗██║╚██╔╝██║██║░░██║
+   ██║░░██║╚█████╔╝██████╦╝██║░╚═╝░██║╚█████╔╝
+   ╚═╝░░╚═╝░╚════╝░╚═════╝░╚═╝░░░░░╚═╝░╚════╝░
+   
+╚════════════════════════════════════════════════╝
+""" 
+if os.path.exists('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt'):
+    os.remove('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt')
+    
+with open('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt', 'w', encoding="utf-8") as f:
+    f.write(intro + "\n")
+    for i in logins:
+        assert i[0][0] == CKA_ID
+        f.write('𝐔𝐑𝐋: %s\n' % i[2])
+        iv = i[0][1]
+        ciphertext = i[0][2]
+        f.write('𝐔𝐬𝐞𝐫: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
+        iv = i[1][1]
+        ciphertext = i[1][2]
+        f.write('𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: %s\n' % unpad(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext), 8).decode())
+        f.write('\n')
