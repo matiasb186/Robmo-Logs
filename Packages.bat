@@ -24,7 +24,8 @@ pip install pyuac
 pip install customtkinter
 pip install pyautogui
 pip install telegram
-pip install python-tk
+pip install tkintertable
+pip install tk
 pip install python-telegram-bot
 pip install pycryptodome
 pip install Pillow
