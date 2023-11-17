@@ -16,8 +16,7 @@
 
 ➤ Any changes to the files may cause software failures.
 
-➤ Downloads may take time depending on your internet connection; 
-  please be patient.
+➤ Downloads may take time depending on your internet connection; please be patient.
 
 
 Steps: 
@@ -27,8 +26,7 @@ RESOURCES:
 
 Install Python:
 
-➤ You can install it from the official Python website: 
-  "https://www.python.org/downloads/"
+➤ You can install it from the official Python website: "https://www.python.org/downloads/"
 
 ➤  Version used in this project: 3.11.5
 
@@ -38,11 +36,9 @@ Install Python:
 
 Install Python Packages:
 
-➤ Click on the download icon to download the necessary 
-   packages for the project.
+➤ Click on the download icon to download the necessary packages for the project.
 
-➤ Clicking on the icon will automatically download them; 
-   no manual installation is required.
+➤ Clicking on the icon will automatically download them; no manual installation is required.
 
 
 
@@ -55,9 +51,7 @@ Builder:
 ➤ Click on the "Stealer" button to configure and download the 
    script.
 
-➤ You can convert it manually by running the .bat file that 
-   will be downloaded in the folder or by clicking on the 
-   "Build EXE" button to do it automatically.
+➤ You can convert it manually by running the .bat file that will be downloaded in the folder or by clicking on the "Build EXE" button to do it automatically.
 
   
 
