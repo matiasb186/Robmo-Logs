@@ -1,4 +1,4 @@
 @echo off
 title R0BM0 ST34L3R
-python BAll.py
+python B_All.py
 pause
