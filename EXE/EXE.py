@@ -49,7 +49,7 @@ while True:
         exe_name = input(Fore.CYAN + "\nEnter the name for your executable: " + Style.RESET_ALL)
         
         os.system("cls || clear")
-        filename = "EXE.py"
+        filename = "Robmo.py"
         filepath = os.path.join(os.getcwd(), filename)
         with open(filepath, "r", encoding="utf-8") as f:
             content = f.read()
@@ -71,7 +71,7 @@ while True:
                     if icon_file:
                         subprocess.call(["pyinstaller", "--onefile", "--windowed", "--icon", icon_file, filename])
                         generated_exe = f"{exe_name}.exe"
-                        os.rename("dist/EXE.exe", f"dist/{generated_exe}")
+                        os.rename("dist/Robmo.exe", f"dist/{generated_exe}")
                         os.system("cls || clear")
                         Write.Print(f"\n{filename} has been converted to {generated_exe} with the selected icon.", Colors.red_to_yellow)
                         os.system("cls || clear")
@@ -80,7 +80,7 @@ while True:
                 else:
                     subprocess.call(["pyinstaller", "--onefile", "--windowed", filename])
                     generated_exe = f"{exe_name}.exe"
-                    os.rename("dist/EXE.exe", f"dist/{generated_exe}")
+                    os.rename("dist/Robmo.exe", f"dist/{generated_exe}")
                     Write.Print(f"\n{filename} has been converted to {generated_exe}.", Colors.red_to_yellow)
                     os.system("cls || clear")
                     
