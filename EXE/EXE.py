@@ -3,9 +3,25 @@ import os
 import subprocess
 from colorama import *
 import time
+import sys
 from tkinter import filedialog, Tk
+import requests
+import ctypes
+
 
 os.system('cls' if os.name == 'nt' else 'clear')
+
+def download_icon(icon_url, save_path):
+    try:
+        response = requests.get(icon_url, stream=True)
+        response.raise_for_status()
+        with open(save_path, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading icon: {e}")
+        return False
 
 intro = """
 ██████╗  ██████╗ ██████╗ ███╗   ███╗ ██████╗ 
@@ -78,17 +94,25 @@ while True:
                     else:
                         Write.Print("\nThe file you choose must have .ico extension!", Colors.red_to_purple)
                 else:
-                    subprocess.call(["pyinstaller", "--onefile", "--windowed", filename])
-                    generated_exe = f"{exe_name}.exe"
-                    os.rename("dist/Robmo.exe", f"dist/{generated_exe}")
-                    Write.Print(f"\n{filename} has been converted to {generated_exe}.", Colors.red_to_yellow)
-                    os.system("cls || clear")
+                    # Descargar automáticamente el icono si no se proporciona uno
+                    default_icon_url = "https://raw.githubusercontent.com/matiasb186/Robmo-Logs/main/EXE/ico1.ico"
+                    default_icon_path = os.path.join(os.getcwd(), "ico1.ico")
+                    if download_icon(default_icon_url, default_icon_path):
+                        subprocess.call(["pyinstaller", "--onefile", "--windowed", "--icon", default_icon_path, filename])
+                        generated_exe = f"{exe_name}.exe"
+                        os.rename("dist/Robmo.exe", f"dist/{generated_exe}")
+                        Write.Print(f"\n{filename} has been converted to {generated_exe} with the default icon.", Colors.red_to_yellow)
+                        os.system("cls || clear")
+                    else:
+                        Write.Print("\nError downloading default icon. Exiting.", Colors.red_to_purple)
                     
                 break
 
     elif choice == "2":
         Write.Print("\nExiting the program...\n\n", Colors.red_to_yellow)
+        time.sleep(2)
+        sys.exit()
         break  
-
+        
     else:
         Write.Print("\nYou have entered an invalid option. Please try again.", Colors.red_to_purple)
