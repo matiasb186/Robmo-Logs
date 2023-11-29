@@ -20,6 +20,7 @@ pip install scipy
 pip install addict
 pip install requests-toolbelt
 pip install FirefoxDecrypt
+pip install librosa
 pip install cx-Freeze
 pip install pyuac
 pip install customtkinter
