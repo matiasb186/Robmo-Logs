@@ -16,6 +16,7 @@ pip install cryptography
 pip install anonfile
 pip install pypiwin32
 pip install regex
+pip install scipy
 pip install addict
 pip install requests-toolbelt
 pip install FirefoxDecrypt
